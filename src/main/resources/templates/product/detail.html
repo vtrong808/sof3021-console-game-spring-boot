@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Chi tiết sản phẩm</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+</head>
+
+<body>
+  <div th:replace="layout/header :: header"></div>
+  <main class="container-xxl px-4 px-md-5 py-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb bg-transparent p-0">
+        <li class="breadcrumb-item"><a th:href="@{/home/index}" class="text-muted text-decoration-none">Trang
+            chủ</a></li>
+        <li class="breadcrumb-item active fw-bold">Chi tiết sản phẩm</li>
+      </ol>
+    </nav>
+    <div class="row g-5 align-items-start">
+      <div class="col-lg-6">
+        <div class="card border-0 shadow rounded-4 overflow-hidden mb-4">
+          <img
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDETAOX9CvZNZS1iHx5JjYZ0lrE2BCfni7XaJJ3fqDIhY1vbYRTmwtk-TbdyF4H8SJJ2brFp1JJ6VeryBKL29vNDNz3zi30ofibpGqy_y1srH8kIeVeM9DI6FWkdCBNL-2J6-MaFtJqjOrV0kcdHZHWBhoBwXHkba5VaP6RtLQ9C8r-w0-iZ0vcmhc8HBrJPeGerC7e3emrTQxQ0i_8_5X6G7TWR5xwjd1q_6YkuI7oLfmMAF0A8mSCJDjw5ZnCrvX0YQ0fzoPGcsTb"
+            class="img-fluid product-image" alt="">
+        </div>
+
+        <div class="row g-3 thumb">
+          <div class="col-3">
+            <img class="img-fluid rounded-3 border border-primary" alt="Để hình ở đây">
+          </div>
+          <div class="col-3">
+            <img class="img-fluid rounded-3 opacity-75" alt="Để hình ở đây">
+          </div>
+          <div class="col-3">
+            <img class="img-fluid rounded-3 opacity-75" alt="Để hình ở đây">
+          </div>
+          <div class="col-3">
+            <img class="img-fluid rounded-3 opacity-75" alt="Để hình ở đây">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+
+        <span class="badge bg-warning text-dark mb-3 px-3 py-2">Phiên bản </span>
+
+        <h1 class="fw-bold mb-3">Tên sản phẩm</h1>
+
+        <div class="d-flex align-items-center gap-3 mb-4">
+          <div class="text-warning fs-5">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+              class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+          </div>
+          <span class="text-muted"></span>
+        </div>
+
+        <div class="p-4 bg-white rounded-4 shadow-sm mb-4">
+          <div class="d-flex align-items-end gap-3">
+            <span class="display-6 fw-bold text-primary">Giá</span>
+            <span class="fs-5 text-muted text-decoration-line-through">Giá</span>
+          </div>
+          <!-- <span class="badge bg-success mt-3">
+            <i class="fas fa-tag me-1"></i> Ưu đãi
+          </span> -->
+        </div>
+
+        <p class="text-secondary mb-4">
+          Nội dung chi tiết
+
+        </p>
+        <div class="mb-4">
+          <h6 class="fw-bold mb-3">Dung lượng</h6>
+          <div class="btn-group w-auto">
+            <button class="btn btn-outline-primary active">1TB SSD</button>
+            <button class="btn btn-outline-primary">2TB SSD</button>
+          </div>
+        </div>
+        <div class="row g-3 mb-4">
+          <div class="col-4">
+            <div class="input-group">
+              <button class="btn btn-outline-secondary">-</button>
+              <input type="number" class="form-control text-center" value="1">
+              <button class="btn btn-outline-secondary">+</button>
+            </div>
+          </div>
+          <div class="col">
+            <button class="btn btn-primary w-50 h-100 fs-5">
+              <i class="fas fa-cart-plus me-2"></i> Thêm vào giỏ
+            </button>
+          </div>
+        </div>
+
+        <button class="btn btn-outline-secondary w-25 mb-4">
+          <i class="fas fa-heart me-2"></i> Yêu thích
+        </button>
+
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="p-3 bg-white rounded-3 shadow-sm d-flex gap-3">
+              <i class="fas fa-truck-fast fa-2x text-primary"></i>
+              <div>
+                <p class="fw-bold mb-1 h-25">Giao hàng nhanh</p>
+                <small class="text-muted">Toàn quốc</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="p-3 bg-white rounded-3 shadow-sm d-flex gap-3">
+              <i class="fas fa-shield-alt fa-2x text-primary"></i>
+              <div>
+                <p class="fw-bold mb-1">Bảo hành 3 năm</p>
+                <small class="text-muted">Chính hãng</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <div th:replace="layout/footer :: footer"></div>
+
+</body>
+
+</html>
