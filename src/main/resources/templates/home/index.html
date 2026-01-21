@@ -12,119 +12,126 @@
   <link th:href="@{/css/style.css}" rel="stylesheet" />
 </head>
 
-<body>
+<body class="bg-light">
   <div th:replace="layout/header :: header"></div>
-
-  <section class="container-xxl px-4 py-5">
-    <div class="hero-section position-relative overflow-hidden" style="
+  <main class="container-lg py-5">
+    <nav class="mb-4 " aria-label="breadcrumb">
+      <ol class="breadcrumb breadcrumb bg-transparent p-0 mb-0">
+        <li class="breadcrumb-item"><a th:href="@{/}" class="text-muted text-decoration-none">Trang chủ</a></li>
+      </ol>
+    </nav>
+    <section class="container-xxl px-4 py-5">
+      <div class="hero-section position-relative overflow-hidden" style="
           background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuCqhplmrV8338TfhdkAG4aePrOF5RnaNm6DifLfy6whTpyEMNUnyzqzjQ-OsyBfIHHqFc9GU4yoa9yD77RTxXrkFo-ZpHB4kKGd2y9TNBIuJ8jsPT-GmVn_DI1MRcg1l8Nzm-uTwZdbHwz11usq7MqhMtnBXfDv2bG7vSolr8Sly_DWg2UOmqrm5e6pdd0JjRl4pPr57kPX4CYzzffk_dDUhE26a9tDccGO2MUoy6sU7i7fm9WQd_CoHTCOJXgboAEZPjazNYcBlwVE&quot;);
         ">
-      <div class="hero-overlay position-absolute top-0 start-0 end-0 bottom-0"></div>
+        <div class="hero-overlay position-absolute top-0 start-0 end-0 bottom-0"></div>
 
-      <div class="position-absolute top-50 start-0 translate-middle-y p-5 ms-5" style="max-width: 650px; z-index: 2">
+        <div class="position-absolute top-50 start-0 translate-middle-y p-5 ms-5" style="max-width: 650px; z-index: 2">
 
-        <h1 class="display-3 fw-black mb-4 lh-1 fw-bold">
-          NÂNG TẦM<br />
-          <span style="color: rgb(10, 237, 71)" class="fw-bold">TRẢI NGHIỆM GAME</span>
-        </h1>
+          <h1 class="display-3 fw-black mb-4 lh-1 fw-bold">
+            NÂNG TẦM<br />
+            <span style="color: rgb(10, 237, 71)" class="fw-bold">TRẢI NGHIỆM GAME</span>
+          </h1>
 
-        <p class="lead text-muted mb-5 fw-bold">
-          Ưu đãi độc quyền dành cho bạn với các thiết bị chơi game hiện đại,
-          tay cầm chuyên nghiệp và tai nghe chất lượng cao.
-        </p>
+          <p class="lead text-muted mb-5 fw-bold">
+            Ưu đãi độc quyền dành cho bạn với các thiết bị chơi game hiện đại,
+            tay cầm chuyên nghiệp và tai nghe chất lượng cao.
+          </p>
 
-        <div class="d-flex gap-3">
-          <button class="btn btn-primary btn-lg px-5 py-3 fw-bold rounded-pill">
-            Mua ngay
-          </button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="container-xxl px-4 py-5">
-    <div class="d-flex justify-content-between align-items-center mb-5">
-      <h2 class="display-6 fw-black">SẢN PHẨM BÁN CHẠY</h2>
-      <a href="#" class="text-primary fw-bold text-decoration-none d-flex align-items-center gap-1">
-        Xem tất cả
-        <span class="material-symbols-outlined"></span>
-      </a>
-    </div>
-
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
-      <div class="col">
-        <div class="card h-100">
-          <div class="product-img">
-            <span class="position-absolute top-0 start-0 badge bg-info text-white m-3">
-              Lựa chọn hàng đầu
-            </span>
-          </div>
-
-          <div class="card-body">
-            <h5 class="card-title fw-bold">Tên sp</h5>
-            <p class="text-muted small mb-3">
-
-            </p>
-
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <span class="fs-4 fw-black">$122222</span>
-            </div>
-
-            <button class="btn btn-outline-secondary w-100 py-3 fw-bold">
+          <div class="d-flex gap-3">
+            <button class="btn btn-primary btn-lg px-5 py-3 fw-bold rounded-pill">
               Mua ngay
             </button>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-  <section class="container-xxl px-4 py-5 bg-light rounded-4 my-5">
-    <div class="row mb-5 align-items-center">
-      <div class="col-md-8">
-        <h2 class="display-6 fw-black mb-2">KHUYẾN MÃI HOT</h2>
-        <p class="text-muted">
+    </section>
 
-        </p>
-      </div>
-
-      <div class="col-md-4 text-md-end">
-        <a href="#" class="btn btn-outline-dark px-4 py-3 fw-bold">
+    <section class="container-xxl px-4 py-5">
+      <div class="d-flex justify-content-between align-items-center mb-5">
+        <h2 class="display-6 fw-black">SẢN PHẨM BÁN CHẠY</h2>
+        <a href="#" class="text-primary fw-bold text-decoration-none d-flex align-items-center gap-1">
           Xem tất cả
+          <span class="material-symbols-outlined"></span>
         </a>
       </div>
-    </div>
-  </section>
-  <section class="py-5 bg-light">
-    <div class="container">
-      <h2 class="text-center fw-bold mb-5 display-5 tracking-tight text-dark">SẢN PHẨM MỚI</h2>
 
-      <div class="row g-4">
-
-        <div class="col-lg-6">
-          <div class="card border-0 shadow-lg overflow-hidden rounded-4 position-relative h-100">
-            <div class="card-img-top ratio ratio-1x1  overflow-hidden">
-              <img src="" class="" alt="">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+        <div class="col">
+          <div class="card h-100">
+            <div class="product-img">
+              <span class="position-absolute top-0 start-0 badge bg-info text-white m-3">
+                Lựa chọn hàng đầu
+              </span>
             </div>
 
-            <div class="card-img-overlay d-flex flex-column justify-content-end p-4 ">
-              <span class="badge bg-success text-white mb-2 d-inline-block px-3 py-2  fw-bold fs-6">
-                Vừa ra mắt
-              </span>
-              <h3 class="card-title text-white fw-black mb-3 display-6">
-
-              </h3>
-              <p class="text-white-75 mb-4 fs-5">
+            <div class="card-body">
+              <h5 class="card-title fw-bold">Tên sp</h5>
+              <p class="text-muted small mb-3">
 
               </p>
-              <a href="#" class="btn btn-success btn-lg fw-bold rounded-pill px-5 py-3 shadow">
-                MUA NGAY
-              </a>
+
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="fs-4 fw-black">$122222</span>
+              </div>
+
+              <button class="btn btn-outline-secondary w-100 py-3 fw-bold">
+                Mua ngay
+              </button>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+    <section class="container-xxl px-4 py-5 bg-light rounded-4 my-5">
+      <div class="row mb-5 align-items-center">
+        <div class="col-md-8">
+          <h2 class="display-6 fw-black mb-2">KHUYẾN MÃI HOT</h2>
+          <p class="text-muted">
+
+          </p>
+        </div>
+
+        <div class="col-md-4 text-md-end">
+          <a href="#" class="btn btn-outline-dark px-4 py-3 fw-bold">
+            Xem tất cả
+          </a>
+        </div>
+      </div>
+    </section>
+    <section class="py-5 bg-light">
+      <div class="container">
+        <h2 class="text-center fw-bold mb-5 display-5 tracking-tight text-dark">SẢN PHẨM MỚI</h2>
+
+        <div class="row g-4">
+
+          <div class="col-lg-6">
+            <div class="card border-0 shadow-lg overflow-hidden rounded-4 position-relative h-100">
+              <div class="card-img-top ratio ratio-1x1  overflow-hidden">
+                <img src="" class="" alt="">
+              </div>
+
+              <div class="card-img-overlay d-flex flex-column justify-content-end p-4 ">
+                <span class="badge bg-success text-white mb-2 d-inline-block px-3 py-2  fw-bold fs-6">
+                  Vừa ra mắt
+                </span>
+                <h3 class="card-title text-white fw-black mb-3 display-6">
+
+                </h3>
+                <p class="text-white-75 mb-4 fs-5">
+
+                </p>
+                <a href="#" class="btn btn-success btn-lg fw-bold rounded-pill px-5 py-3 shadow">
+                  MUA NGAY
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <main></main>
   <div th:replace="layout/footer :: footer"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
