@@ -1,0 +1,112 @@
+  :root {
+      --primary: #10b981;
+      /* Fresh Mint Green */
+      --accent: #3b82f6;
+      /* Electric Blue */
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --bg-light: #ffffff;
+      --card-bg: #ffffff;
+  }
+
+  body {
+      font-family: 'Space Grotesk', sans-serif;
+      color: var(--text-main);
+      background-color: #f8f9fa;
+  }
+
+  .btn-primary {
+      background-color: #10b981;
+      border-color: rgb(0, 0, 0);
+  }
+
+  .btn-primary:hover {
+      background-color: rgb(10, 237, 71);
+
+      border-color: #000;
+  }
+
+  .text-primary {
+      color: var(--primary) !important;
+  }
+
+
+
+  .border-primary {
+      border-color: var(--primary) !important;
+  }
+
+  .hover-bg-light:hover {
+      background-color: #f8f9fa !important;
+  }
+
+  .table th,
+  .table td {
+      vertical-align: middle;
+  }
+
+  .card.sticky-top {
+      border-radius: 1rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  }
+
+
+  .hero-section {
+      height: 520px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 1.5rem;
+      position: relative;
+  }
+
+  .hero-overlay {
+      background: linear-gradient(to right, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.6) 40%, rgba(255, 255, 255, 0) 100%);
+  }
+
+  .product-img {
+      aspect-ratio: 1/1;
+      background-size: cover;
+      background-position: center;
+  }
+
+  .flash-deal-item {
+      transition: border-color 0.3s;
+  }
+
+  .flash-deal-item:hover {
+      border-color: var(--primary) !important;
+  }
+
+  .new-arrival-card {
+      height: 400px;
+      border-radius: 1.5rem;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.7s ease;
+  }
+
+  .new-arrival-card:hover {
+      transform: scale(1.08);
+  }
+
+  .product-card,
+  .card {
+      transition: all 0.3s ease;
+      border-radius: 1rem;
+  }
+
+  .product-card:hover,
+  .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08) !important;
+  }
+
+  .badge {
+      font-size: 0.85rem;
+      padding: 0.5em 1em;
+  }
+
+  footer {
+      background-color: #f1f5f9;
+  }
