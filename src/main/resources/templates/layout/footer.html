@@ -1,70 +1,45 @@
 <!doctype html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" data-bs-theme="light" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title></title>
 
-<style>
-  .footer-link {
-    color: #cbd5e1;
-    text-decoration: none;
-    transition: 0.2s;
-  }
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-  .footer-link:hover {
-    color: #22c55e;
-    text-decoration: underline;
-    text-underline-offset: 4px;
-  }
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-  .social-btn {
-    width: 40px;
-    height: 40px;
-    border: 1px solid #22c55e;
-    color: #22c55e;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    transition: 0.2s;
-  }
 
-  .social-btn:hover {
-    background-color: #22c55e;
-    color: #0f172a;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(34, 197, 94, 0.4);
-  }
-</style>
-
+  <link th:href="@{/css/style.css}" rel="stylesheet" />
+</head>
 <body>
-
-  <footer th:fragment="footer" class="pt-5 pb-4 mt-auto" style="background-color:#0f172a; color:#cbd5e1;">
-
-    <div class="container-xl px-2 py-3">
+  <footer th:fragment="footer" class="pt-5 pb-5 mt-auto" style="background-color: #0f172a; color: #e2e8f0;">
+    <div class="container-xl px-4 px-lg-5">
       <div class="row g-5">
         <div class="col-lg-5">
           <div class="d-flex align-items-center gap-3 mb-4">
-            <i class="fa-solid fa-gamepad fs-1" style="color:#22c55e;"></i>
-            <h2 class="fs-3 fw-bold m-0 text-white">
-              Game<span style="color:#22c55e;">Store</span>
+            <i class="fa-solid fa-gamepad fs-1 text-success"></i>
+            <h2 class="fs-3 fw-bold m-0">
+              Game<span class="text-success">Store</span>
             </h2>
           </div>
-          <p class="mb-4" style="max-width:380px; color:#94a3b8;">
-            Cửa hàng thiết bị console game chính hãng. PlayStation, Xbox,
-            Nintendo và phụ kiện gaming cao cấp dành cho bạn.
+          <p class="small" style="max-width: 380px; color: #94a3b8;">
+            Cửa hàng thiết bị console game chính hãng. PlayStation, Xbox, Nintendo và phụ kiện gaming cao cấp dành cho
+            bạn.
           </p>
         </div>
-
         <div class="col-6 col-md-3 col-lg-2">
-          <h6 class="fw-bold text-uppercase mb-4" style="color:#22c55e;">Sản phẩm</h6>
+          <h6 class="fw-bold text-uppercase mb-4 text-success">Sản phẩm</h6>
           <ul class="list-unstyled small">
             <li class="mb-2"><a href="#" class="footer-link">PlayStation</a></li>
-            <li class="mb-2"><a href="#" class="footer-link">Xbox</a></li>
+            <li class="mb-2"><a href="#" class="footer-link ">Xbox</a></li>
             <li class="mb-2"><a href="#" class="footer-link">Nintendo</a></li>
             <li class="mb-2"><a href="#" class="footer-link">Phụ kiện</a></li>
           </ul>
         </div>
         <div class="col-6 col-md-3 col-lg-2">
-          <h6 class="fw-bold text-uppercase mb-4" style="color:#22c55e;">Hỗ trợ</h6>
+          <h6 class="fw-bold text-uppercase mb-4 text-success">Hỗ trợ</h6>
           <ul class="list-unstyled small">
             <li class="mb-2"><a href="#" class="footer-link">Theo dõi đơn hàng</a></li>
             <li class="mb-2"><a href="#" class="footer-link">Chính sách đổi trả</a></li>
@@ -74,35 +49,36 @@
         </div>
 
         <div class="col-lg-3">
-          <h6 class="fw-bold text-uppercase mb-4" style="color:#22c55e;">Kết nối với chúng tôi</h6>
-          <p class="small mb-3" style="color:#94a3b8;">
+          <h6 class="fw-bold text-uppercase mb-4 text-success">Kết nối với chúng tôi</h6>
+          <p class="small mb-4" style="color: #94a3b8;">
             Theo dõi GameStore để cập nhật sản phẩm mới và ưu đãi hấp dẫn
           </p>
 
-          <div class="d-flex gap-3">
-            <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
-            <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
-            <a href="#" class="social-btn"><i class="fab fa-discord"></i></a>
+          <div class="d-flex gap-3 justify-content-start">
+            <a href="#" class="social-btn google-btn" aria-label="Google">
+              <i class="fab fa-google fs-5"></i>
+            </a>
+            <a href="#" class="social-btn facebook-btn" aria-label="Facebook">
+              <i class="fab fa-facebook-f fs-5"></i>
+            </a>
+          </div>
+
+        </div>
+
+        <div class="border-top mt-5 pt-4" style="border-color: #1e293b;">
+          <div class="row align-items-center small">
+            <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+              © 2026 <span class="text-success">GameStore</span>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+              <a href="#" class="footer-link me-4">Điều khoản dịch vụ</a>
+              <a href="#" class="footer-link me-4">Chính sách bảo mật</a>
+              <a href="#" class="footer-link">Cài đặt cookie</a>
+            </div>
           </div>
         </div>
 
       </div>
-
-      <div class="border-top mt-5 pt-4" style="border-color:#1e293b;">
-        <div class="row align-items-center small">
-          <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
-            © 2026 <span style="color:#22c55e;">GameStore</span>
-          </div>
-          <div class="col-md-6 text-center text-md-end">
-            <a href="#" class="footer-link me-3">Điều khoản</a>
-            <a href="#" class="footer-link me-3">Bảo mật</a>
-            <a href="#" class="footer-link">Cookie</a>
-          </div>
-        </div>
-      </div>
-
-    </div>
   </footer>
 
 </body>
