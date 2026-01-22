@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Đăng Ký</title>
+
+    <link href=" https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+    <style>
+        .btn-primary {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #16a34a, #15803d);
+            transform: translateY(-2px);
+        }
+
+        .form-floating .form-control {
+            padding-left: 2.8rem !important;
+            padding-right: 3rem !important;
+        }
+
+        .form-floating .form-control:focus {
+            border-color: #10b981;
+            box-shadow: 0 0 0 0.25rem rgba(16, 185, 129, 0.25);
+        }
+
+
+        .form-floating i {
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .rounded-pill {
+            border-radius: 50rem !important;
+        }
+
+        .shadow-lg {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+        }
+
+
+        .form-floating .input-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-57%);
+            z-index: 5;
+            color: #6b7280;
+            font-size: 16px;
+            pointer-events: none;
+        }
+
+        .form-floating>label {
+            padding-left: 3rem;
+
+        }
+
+        .hr {
+            border: none;
+            height: 1px;
+            background-color: #e5e7eb;
+        }
+
+        .signup {
+            color: #22c55e;
+        }
+    </style>
+</head>
+
+<body>
+    <div th:replace="layout/header :: header"></div>
+    <main class="container-lg py-5">
+        <nav class="mb-4 " aria-label="breadcrumb">
+            <ol class="breadcrumb breadcrumb bg-transparent p-0 mb-0">
+                <li class="breadcrumb-item"><a th:href="@{/}" class="text-muted text-decoration-none">Trang chủ</a>
+                </li>
+                <li class="breadcrumb-item"><a th:href="@{/auth/login}" class="text-muted text-decoration-none">Đăng
+                        nhập</a>
+                </li>
+                <li class="breadcrumb-item active fw-bold">Đăng ký</li>
+            </ol>
+        </nav>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-7 col-xl-6">
+                    <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                        <div class="text-center py-4">
+                            <h2 class="signup mb-2 mt-3 fw-bold">Đăng ký</h2>
+                            <p class="text-muted mb-0 mt-3">Đăng ký nhanh, trải nghiệm liền tay!</p>
+                        </div>
+
+                        <div class="card-body p-5 p-md-5">
+
+                            <form method="post" class="space-y-4">
+
+                                <div class="form-floating position-relative mb-4">
+                                    <input type="text" class="form-control rounded-4 ps-5" id="fullName"
+                                        placeholder="Họ và tên" required>
+                                    <label for="fullName">Họ và tên</label>
+                                    <i class="fas fa-user input-icon"></i>
+                                </div>
+
+
+                                <div class="form-floating position-relative mb-4 ">
+                                    <input type="email" class="form-control rounded-4 ps-5 " id="email" name="email"
+                                        placeholder="Email" required>
+
+                                    <label for="email">Email</label>
+
+                                    <i class="fas fa-envelope input-icon"></i>
+                                </div>
+
+                                <div class="row g-3">
+                                    <div class="form-floating position-relative mb-4 col-sm-6">
+                                        <input type="password" class="form-control rounded-4 ps-5 " id="password"
+                                            name="password" placeholder="Mật khẩu" required>
+                                        <label for="password">Mật khẩu</label>
+                                        <i class="fas fa-lock input-icon"></i>
+                                    </div>
+
+                                    <div class="form-floating position-relative mb-4 col-sm-6">
+                                        <input type="password" class="form-control rounded-4 ps-5 " id="confirmPassword"
+                                            name="confirmPassword" placeholder="Xác nhận mật khẩu" required>
+                                        <label for="confirmPassword">Xác nhận mật khẩu</label>
+                                        <i class="fas fa-lock input-icon"></i>
+                                    </div>
+
+                                </div>
+
+                                <button type="submit"
+                                    class="btn btn-primary btn-lg w-100 fw-bold rounded-pill shadow-lg py-3">
+                                    Đăng ký
+                                </button>
+                            </form>
+
+                            <div class="d-flex align-items-center my-4">
+                                <hr class="flex-grow-1">
+                                <span class="px-3 text-muted small">Hoặc đăng nhập với</span>
+                                <hr class="flex-grow-1">
+                            </div>
+
+                            <div class="d-flex justify-content-center gap-3">
+                                <a class="btn btn-light rounded-circle p-3"><i
+                                        class="fab fa-google text-danger"></i></a>
+                                <a class="btn btn-light rounded-circle p-3"><i class="fab fa-facebook-f "
+                                        style="color: #0a4ec8;"></i></a>
+                            </div>
+
+                            <div class="text-center mt-5">
+                                <p class="text-muted">
+                                    Đã có tài khoản?
+                                    <a th:href="@{/auth/login}" class="text-primary fw-bold text-decoration-none">Đăng
+                                        nhập
+                                        ngay</a>
+                                </p>
+                                <p class="text-muted">
+                                    Đã có tài khoản?
+                                    <a th:href="@{/account/edit-profile}"
+                                        class="text-primary fw-bold text-decoration-none">
+                                        Hồ sơ</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    </main>
+
+    <div th:replace="layout/footer :: footer"></div>
+</body>
+
+</html>
