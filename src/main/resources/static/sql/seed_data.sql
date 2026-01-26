@@ -11,9 +11,9 @@ INSERT INTO Categories (category_name, category_description) VALUES
 ('Accessories', 'Phụ kiện chơi game');
 
 INSERT INTO Users (full_name, email, password, phone_number, role) VALUES
-('Admin System', 'admin@game.com', '$2a$10$abcdefghijklmnopqrstuv', '0900000001', 'ADMIN'),
-('Nguyễn Văn John', 'user1@gmail.com', '$2a$10$abcdefghijklmnopqrstuv', '0900000002', 'CUSTOMER'),
-('Trần Thị Lucy', 'user2@gmail.com', '$2a$10$abcdefghijklmnopqrstuv', '0900000003', 'CUSTOMER');
+('Admin System', 'admin@game.com', '123456', '0900000001', 'ADMIN'),
+('Nguyễn Văn John', 'user1@gmail.com', '123456', '0900000002', 'CUSTOMER'),
+('Trần Thị Lucy', 'user2@gmail.com', '123456', '0900000003', 'CUSTOMER');
 
 INSERT INTO Addresses (user_id, recipient_name, phone_number, address_line, city, district, is_default) VALUES
 (2, 'Nguyễn Văn John', '0900000002', '123 Lê Lợi', 'TP.HCM', 'Quận 1', TRUE),
