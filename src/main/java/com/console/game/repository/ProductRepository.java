@@ -13,4 +13,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     // Tìm kiếm sản phẩm theo tên
     List<Product> findByProductNameContaining(String keyword);
+
+    List<Product> findByCategoryCategoryId(Integer categoryId);
 }
