@@ -10,20 +10,17 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <link th:href="@{/css/style.css}" rel="stylesheet" />
-  <style>
-
-  </style>
 </head>
 
 <body class="bg-light">
   <div th:replace="layout/header :: header"></div>
-  <main class="container-lg  py-5">
+  <main class="container-lg py-5">
     <nav class="mb-4 " aria-label="breadcrumb">
-      <ol class="breadcrumb breadcrumb bg-transparent p-0 mb-0">
+      <ol class="breadcrumb breadcrumb bg-transparent p-0 mb-0 fs-5">
         <li class="breadcrumb-item"><a th:href="@{/}" class="text-muted text-decoration-none">Trang chủ</a></li>
       </ol>
     </nav>
-    <section class="container-xxl px-4 py-5">
+    <section>
       <div class="hero-section position-relative overflow-hidden" style="
           background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCqhplmrV8338TfhdkAG4aePrOF5RnaNm6DifLfy6whTpyEMNUnyzqzjQ-OsyBfIHHqFc9GU4yoa9yD77RTxXrkFo-ZpHB4kKGd2y9TNBIuJ8jsPT-GmVn_DI1MRcg1l8Nzm-uTwZdbHwz11usq7MqhMtnBXfDv2bG7vSolr8Sly_DWg2UOmqrm5e6pdd0JjRl4pPr57kPX4CYzzffk_dDUhE26a9tDccGO2MUoy6sU7i7fm9WQd_CoHTCOJXgboAEZPjazNYcBlwVE');
         ">
@@ -49,7 +46,6 @@
         </div>
       </div>
     </section>
-
     <section class="container-xxl px-4 py-5">
       <div class="d-flex justify-content-between align-items-center mb-5">
         <h2 class="display-6 fw-black">SẢN PHẨM BÁN CHẠY</h2>
@@ -66,7 +62,7 @@
               <span class="position-absolute top-0 start-0 badge bg-info text-white m-3">
                 Hot
               </span>
-              <img th:src="@{${p.thumbnailUrl}}" class="card-img-top" alt="Sản phẩm"
+              <img th:src="${p.thumbnailUrl}" class="card-img-top" alt="Sản phẩm"
                 style="height: 200px; object-fit: cover;">
             </div>
 

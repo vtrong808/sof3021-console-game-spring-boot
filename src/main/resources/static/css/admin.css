@@ -1,0 +1,44 @@
+        :root {
+            --sidebar-width: 260px;
+            --primary: #22c55e;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+
+        #sidebar-wrapper {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: #fff;
+            border-right: 1px solid #dee2e6;
+            z-index: 1030;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #page-content-wrapper {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+        }
+
+
+        .list-group-item-action:hover {
+            background-color: rgba(34, 197, 94, 0.1) !important;
+            color: var(--primary) !important;
+        }
+
+        .list-group-item.active {
+            background-color: var(--primary) !important;
+            border-color: var(--primary) !important;
+            color: #fff !important;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(34, 197, 94, 0.15) !important;
+        }
