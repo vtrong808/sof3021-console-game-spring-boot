@@ -52,12 +52,18 @@
           </li>
         </ul>
         <div class="d-flex align-items-center gap-3">
-          <div class="position-relative" style="width: 280px; max-width: 100%">
-            <i
-              class="fa-solid fa-magnifying-glass position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
-            <input type="search" class="form-control ps-5 rounded-pill border-secondary-subtle"
-              placeholder="Tìm kiếm sản phẩm..." />
-          </div>
+          
+
+        <form action="/product/list" method="get" class="position-relative" style="width: 280px; max-width: 100%">
+            <button type="submit" class="btn border-0 p-0 position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="z-index: 5;">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+            
+            <input type="search" name="keyword" class="form-control ps-5 rounded-pill border-secondary-subtle"
+                  placeholder="Tìm kiếm sản phẩm..." 
+                  th:value="${param.keyword}" />
+        </form>
+
 
           <a th:href="@{/auth/login}"
             class="btn btn-outline-success rounded-circle d-flex align-items-center justify-content-center user-btn">
