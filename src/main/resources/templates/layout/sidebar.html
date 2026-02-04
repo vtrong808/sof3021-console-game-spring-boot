@@ -20,9 +20,9 @@
     <div th:fragment="sidebar" id="sidebar-wrapper">
         <div class="p-4 border-bottom">
             <div class="d-flex align-items-center gap-3">
-                <div class="bg-success p-2 rounded">
-                    <i class="fas fa-gamepad text-white fs-4"></i>
-                </div>
+                <a class="navbar-brand d-flex align-items-center fw-bold fs-4 text-dark" th:href="@{/}">
+                    <img th:src="@{/images/panda2.png}" alt="Logo" height="50">
+                </a>
                 <h5 class="fw-bold mb-0">Admin</h5>
             </div>
         </div>
@@ -45,7 +45,7 @@
 
             <a th:href="@{/admin/vip}"
                 class="list-group-item list-group-item-action rounded-3 mb-1 px-4 py-3 text-muted">
-                <i class="fas fa-crown me-2 icon-vip"></i> Khách hàng VIP
+                <i class="fas fa-crown me-2 icon-vip"></i> Quản lý khách hàng
             </a>
 
             <a th:href="@{/admin/account}"
