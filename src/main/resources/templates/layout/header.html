@@ -17,89 +17,82 @@
 
 <body>
   <nav th:fragment="header" class="navbar navbar-expand-md navbar-light bg-white shadow-sm sticky-top">
-    <div class="container-xl px-4">
-
-
-      <a class="navbar-brand d-flex align-items-center fw-bold fs-4 text-dark" th:href="@{/}">
-        <i class="fa-solid fa-gamepad  fs-2"></i>
-        Game<span style="color: rgb(10, 237, 71);">Store</span>
-      </a>
-
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+    <div class="container-xl px-4 position-relative">
 
       <div class="collapse navbar-collapse" id="navbarContent">
-        <ul class="navbar-nav mx-auto mb-2 mb-md-0 gap-4">
+
+        <a class="navbar-brand d-flex align-items-center fw-bold fs-4 text-dark" th:href="@{/}">
+          <img th:src="@{/images/panda2.png}" alt="Logo" height="55" class="me-3">
+        </a>
+
+        <ul class="navbar-nav me-auto gap-4">
           <li class="nav-item">
-            <a class="nav-link fw-semibold active" th:href="@{/}">
-              Trang chủ
-            </a>
+            <a class="nav-link fw-semibold " th:href="@{/}">Trang chủ</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link fw-semibold text-muted" th:href="@{/product/list}"> Sản phẩm
+            <a class="nav-link fw-semibold " th:href="@{/product/list}" role="button">
+              Sản phẩm
             </a>
           </li>
+
           <li class="nav-item">
-            <a class="nav-link fw-semibold text-muted" th:href="@{/cart/view}">
-              Giỏ hàng
-            </a>
+            <a class="nav-link fw-semibold" th:href="@{/cart/view}">Giỏ hàng</a>
           </li>
+
           <li class="nav-item">
-            <a class="nav-link fw-semibold text-muted" th:href="@{/order/list}">
-              Đơn hàng
-            </a>
+            <a class="nav-link fw-semibold" th:href="@{/order/list}">Đơn hàng</a>
           </li>
         </ul>
-        <div class="d-flex align-items-center gap-3">
-          <div class="position-relative" style="width: 280px; max-width: 100%">
+
+
+        <div class="d-flex align-items-center gap-3 ms-auto">
+
+          <form class="position-relative">
             <i
               class="fa-solid fa-magnifying-glass position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
-            <input type="search" class="form-control ps-5 rounded-pill border-secondary-subtle"
-              placeholder="Tìm kiếm sản phẩm..." />
-          </div>
+            <input type="search" class="form-control ps-5 rounded-5" placeholder="Tìm kiếm ...">
+          </form>
+          <a th:href="@{/cart/view}" class="mini-cart-btn d-flex align-items-center gap-2 text-decoration-none"
+            aria-label="giỏ hàng">
 
-          <a th:href="@{/auth/login}"
-            class="btn btn-outline-success rounded-circle d-flex align-items-center justify-content-center user-btn">
-            <i class="fa-solid fa-user"></i>
+            <span class="icon-wrap position-relative">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart"
+                viewBox="0 0 16 16">
+                <path
+                  d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+              </svg>
+              <span class="cart-badge">0</span>
+            </span>
           </a>
 
+          <a th:href="@{/auth/login}"
+            class="user-login rounded-circle d-flex align-items-center justify-content-center">
+
+            <span class="icon-wrap position-relative">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                class="bi bi-person-circle" viewBox="0 0 16 16">
+                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                <path fill-rule="evenodd"
+                  d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+              </svg>
+            </span>
+          </a>
 
           <div class="dropdown">
-            <a class="d-flex align-items-center gap-2 text-decoration-none dropdown-toggle" href="#" role="button"
-              data-bs-toggle="dropdown" aria-expanded="false">
-
-              <img th:src="@{/images/avatar.png}" class="rounded-circle" width="38" height="38">
-              <span class="fw-bold d-none d-md-block"></span>
+            <a class="dropdown-toggle text-decoration-none" href="#" data-bs-toggle="dropdown">
+              <img th:src="@{/images/avatar.png}" class="rounded-circle" width="40" height="40">
             </a>
-
-            <ul class="dropdown-menu dropdown-menu-end shadow mt-2">
-              <li>
-                <a class="dropdown-item" th:href="@{/account/edit-profile}">
-                  <i class="fa-regular fa-user me-2"></i> Hồ sơ
-                </a>
-              </li>
-              <li>
-                <a class="dropdown-item" th:href="@{/order/my-product-list}">
-                  <i class="fa-solid fa-box me-2"></i> Đơn hàng của bạn
-                </a>
-              </li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-              <li>
-                <a class="dropdown-item text-danger" th:href="@{/auth/logout}">
-                  <i class="fa-solid fa-right-from-bracket me-2"></i> Đăng xuất
-                </a>
-              </li>
+            <ul class="dropdown-menu dropdown-menu-end shadow">
+              <li><a class="dropdown-item" th:href="@{/account/edit-profile}">Hồ sơ</a></li>
+              <li><a class="dropdown-item" th:href="@{/auth/logout}">Đăng xuất</a></li>
             </ul>
           </div>
-
         </div>
       </div>
     </div>
     </div>
   </nav>
+
 </body>
 
 </html>

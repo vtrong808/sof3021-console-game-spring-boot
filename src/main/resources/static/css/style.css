@@ -1,4 +1,3 @@
-/* ==================== ROOT VARIABLES ==================== */
 :root {
     --primary: #10b981;
     /* Fresh Mint Green */
@@ -61,16 +60,37 @@ body {
 }
 
 .hero-section {
-    height: 520px;
+    height: 600px;
+    max-width: 2560px;
+}
+
+.hero-slide {
+    height: 600px;
     background-size: cover;
     background-position: center;
-    border-radius: 1.5rem;
-    position: relative;
 }
 
 .hero-overlay {
-    background: linear-gradient(to right, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.6) 40%, rgba(255, 255, 255, 0) 100%);
+    background: linear-gradient(to right,
+            rgba(0, 0, 0, 0.75),
+            rgba(0, 0, 0, 0.4),
+            rgba(0, 0, 0, 0.15));
+    z-index: 1;
 }
+
+.hero-content {
+    z-index: 2;
+    padding-left: 8vw;
+}
+
+.hero-content .container {
+    max-width: 1200px;
+}
+
+.hero-content h1 {
+    text-shadow: 0 10px 35px rgba(0, 0, 0, 0.6);
+}
+
 
 .product-img {
     aspect-ratio: 1 / 1;
@@ -239,4 +259,87 @@ body {
     background-color: #22c55e !important;
     color: white !important;
     transform: scale(1.1);
+}
+
+.mini-cart-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #ffffff;
+    color: #16da1d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+}
+
+.mini-cart-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.mini-cart-btn:hover {
+    background: #16da1d;
+    color: #fff;
+    transform: scale(1.08);
+    box-shadow: 0 6px 18px rgba(34, 197, 94, 0.45);
+}
+
+.mini-cart-btn:active {
+    transform: scale(0.95);
+}
+
+.cart-badge {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    background: #ef4444;
+    color: #ffffff;
+    font-size: 0.7rem;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    border: 2px solid #ffffff;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.45);
+}
+
+.mini-cart-btn:hover .cart-badge {
+    transform: scale(1.1);
+}
+
+
+.user-login {
+    width: 42px;
+    height: 42px;
+    background: #f0fdf4;
+    color: #22c55e;
+    transition: all 0.25s ease;
+}
+
+/* Icon SVG */
+.user-login svg {
+    width: 20px;
+    height: 20px;
+}
+
+.user-login:hover {
+    background: #22c55e;
+    color: #ffffff;
+    transform: scale(1.08);
+    box-shadow: 0 6px 18px rgba(34, 197, 94, 0.45);
+}
+
+
+.user-login:active {
+    transform: scale(0.95);
+}
+
+
+.user-login:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.35);
 }

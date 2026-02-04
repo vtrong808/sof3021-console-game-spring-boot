@@ -6,9 +6,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/admin")
-public class ProductAController {
-    @GetMapping("/product")
-    public String product() {
-        return "admin/product";
+public class DashboardAController {
+
+    @GetMapping("/dashboard")
+    public String dashboard() {
+
+        return "admin/dashboard";
     }
+
 }

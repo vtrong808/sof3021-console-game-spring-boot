@@ -10,42 +10,57 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <link th:href="@{/css/style.css}" rel="stylesheet" />
-  <style>
-
-  </style>
 </head>
 
 <body class="bg-light">
   <div th:replace="layout/header :: header"></div>
-  <main class="container-lg  py-5">
-    <nav class="mb-4 " aria-label="breadcrumb">
-      <ol class="breadcrumb breadcrumb bg-transparent p-0 mb-0">
-        <li class="breadcrumb-item"><a th:href="@{/}" class="text-muted text-decoration-none">Trang chủ</a></li>
-      </ol>
-    </nav>
-    <section class="container-xxl px-4 py-5">
-      <div class="hero-section position-relative overflow-hidden" style="
-          background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCqhplmrV8338TfhdkAG4aePrOF5RnaNm6DifLfy6whTpyEMNUnyzqzjQ-OsyBfIHHqFc9GU4yoa9yD77RTxXrkFo-ZpHB4kKGd2y9TNBIuJ8jsPT-GmVn_DI1MRcg1l8Nzm-uTwZdbHwz11usq7MqhMtnBXfDv2bG7vSolr8Sly_DWg2UOmqrm5e6pdd0JjRl4pPr57kPX4CYzzffk_dDUhE26a9tDccGO2MUoy6sU7i7fm9WQd_CoHTCOJXgboAEZPjazNYcBlwVE');
-        ">
-        <div class="hero-overlay position-absolute top-0 start-0 end-0 bottom-0"></div>
+  <main class="container-lg py-5">
+    <section class="py-4">
+      <div class="container-fluid px-4">
+        <div class="hero-section position-relative overflow-hidden rounded-4 mx-auto">
 
-        <div class="position-absolute top-50 start-0 translate-middle-y p-5 ms-5" style="max-width: 650px; z-index: 2">
+          <div id="heroCarousel" class="carousel slide carousel-fade h-100" data-bs-ride="carousel"
+            data-bs-interval="3000">
 
-          <h1 class="display-3 fw-black mb-4 lh-1 fw-bold">
-            NÂNG TẦM<br />
-            <span style="color: rgb(10, 237, 71)" class="fw-bold">TRẢI NGHIỆM GAME</span>
-          </h1>
+            <div class="carousel-indicators">
+              <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+              <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+              <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+            </div>
 
-          <p class="lead text-muted mb-5 fw-bold text-white">
-            Ưu đãi độc quyền dành cho bạn với các thiết bị chơi game hiện đại,
-            tay cầm chuyên nghiệp và tai nghe chất lượng cao.
-          </p>
+            <div class="carousel-inner">
+              <div class="carousel-item active hero-slide" style="background-image: url('/images/ps.jpg');"></div>
+              <div class="carousel-item hero-slide" style="background-image: url('/images/nintendo.jpg');"></div>
+              <div class="carousel-item hero-slide" style="background-image: url('/images/xbox.jpg');"></div>
+            </div>
 
-          <div class="d-flex gap-3">
-            <button class="btn btn-primary btn-lg px-5 py-3 fw-bold rounded-pill">
-              Mua ngay
-            </button>
           </div>
+
+          <div class="hero-overlay position-absolute top-0 start-0 w-100 h-100"></div>
+
+          <div class="hero-content position-absolute top-50 start-0 translate-middle-y w-100">
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-8 col-md-6">
+                  <h1 class="display-2 fw-bold lh-1 mb-4 text-white animate__animated animate__fadeInUp">
+                    NÂNG TẦM<br>
+                    <span class="text-success">TRẢI NGHIỆM GAME</span>
+                  </h1>
+
+                  <p class="lead text-white mb-4 ">
+                    Ưu đãi độc quyền với console, tay cầm và phụ kiện gaming cao cấp.
+                  </p>
+
+                  <button
+                    class="btn btn-success btn-lg px-5 py-3 rounded-pill fw-bold shadow-lg animate__animated animate__fadeInUp animate__delay-2s">
+                    Mua ngay
+                    <i class="bi bi-arrow-right ms-2"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -66,7 +81,7 @@
               <span class="position-absolute top-0 start-0 badge bg-info text-white m-3">
                 Hot
               </span>
-              <img th:src="@{${p.thumbnailUrl}}" class="card-img-top" alt="Sản phẩm"
+              <img th:src="${p.thumbnailUrl}" class="card-img-top" alt="Sản phẩm"
                 style="height: 200px; object-fit: cover;">
             </div>
 
