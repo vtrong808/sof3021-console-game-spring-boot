@@ -63,7 +63,10 @@
                                 <span class="badge bg-warning text-dark"></span>
                             </td>
                             <td class="py-4 px-5 text-end">
-                                <a th:href="@{/order/detail}" class="btn btn-sm btn-outline-success">Chi tiết</a>
+                                <a th:href="@{/order/detail(id=${order.orderId})}"
+                                    class="btn btn-sm btn-outline-success rounded-pill px-3">
+                                    Chi tiết
+                                </a>
                             </td>
                         </tr>
                     </tbody>
@@ -89,7 +92,9 @@
             </div>
         </div>
     </main>
+
     <div th:replace="layout/footer :: footer"></div>
+    
 </body>
 
 </html>
