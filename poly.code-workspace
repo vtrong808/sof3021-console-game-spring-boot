@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"name": "poly",
+			"path": "../BTLab/lab7_1/poly"
+		}
+	],
+	"settings": {
+		"java.configuration.updateBuildConfiguration": "interactive"
+	}
+}

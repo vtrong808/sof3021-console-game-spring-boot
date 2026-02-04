@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="vi" data-bs-theme="light" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+
+    </style>
+</head>
+
+<body>
+
+    <div th:fragment="sidebar" id="sidebar-wrapper">
+        <div class="p-4 border-bottom">
+            <div class="d-flex align-items-center gap-3">
+                <div class="bg-success p-2 rounded">
+                    <i class="fas fa-gamepad text-white fs-4"></i>
+                </div>
+                <h5 class="fw-bold mb-0">Admin</h5>
+            </div>
+        </div>
+
+        <div class="list-group list-group-flush px-2 mt-3 flex-grow-1">
+
+            <a th:href="@{/admin/dashboard}" class="list-group-item list-group-item-action rounded-3 mb-2 px-4 py-3">
+                <i class="fas fa-tachometer-alt me-2 icon-dashboard"></i> Tổng quan
+            </a>
+
+            <a th:href="@{/admin/category}"
+                class="list-group-item list-group-item-action rounded-3 mb-1 px-4 py-3 text-muted">
+                <i class="fas fa-layer-group me-2 icon-category"></i> Quản lý danh mục
+            </a>
+
+            <a th:href="@{/admin/product}"
+                class="list-group-item list-group-item-action rounded-3 mb-1 px-4 py-3 text-muted">
+                <i class="fas fa-box-open me-2 icon-product"></i> Quản lý sản phẩm
+            </a>
+
+            <a th:href="@{/admin/vip}"
+                class="list-group-item list-group-item-action rounded-3 mb-1 px-4 py-3 text-muted">
+                <i class="fas fa-crown me-2 icon-vip"></i> Khách hàng VIP
+            </a>
+
+            <a th:href="@{/admin/account}"
+                class="list-group-item list-group-item-action rounded-3 mb-1 px-4 py-3 text-muted">
+                <i class="fas fa-user-gear me-2 icon-account"></i> Quản lý tài khoản
+            </a>
+
+            <a th:href="@{/admin/order}"
+                class="list-group-item list-group-item-action rounded-3 mb-1 px-4 py-3 text-muted">
+                <i class="fas fa-file-invoice-dollar me-2 icon-order"></i> Quản lý đơn hàng
+            </a>
+
+            <a th:href="@{/admin/revenue}"
+                class="list-group-item list-group-item-action rounded-3 mb-1 px-4 py-3 text-muted">
+                <i class="fas fa-chart-pie me-2 icon-revenue"></i> Phân tích dữ liệu
+            </a>
+
+        </div>
+        <div class="p-4 border-top mt-auto">
+            <div class="d-flex align-items-center gap-3 mb-3 p-3 bg-light rounded">
+                <img src="https://via.placeholder.com/50" class="rounded-circle">
+                <div>
+                    <strong>Trọng</strong><br>
+                    <small class="text-muted">Super Admin</small>
+                </div>
+            </div>
+
+            <button class="btn btn-outline-danger w-100">
+                <i class="fas fa-sign-out-alt me-2"></i> Đăng xuất
+            </button>
+        </div>
+    </div>
+    <div th:replace="layout/footer :: footer"></div>
+</body>
+
+</html>

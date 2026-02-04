@@ -60,16 +60,37 @@ body {
 }
 
 .hero-section {
-    height: 520px;
+    height: 600px;
+    max-width: 2560px;
+}
+
+.hero-slide {
+    height: 600px;
     background-size: cover;
     background-position: center;
-    border-radius: 1.5rem;
-    position: relative;
 }
 
 .hero-overlay {
-    background: linear-gradient(to right, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.6) 40%, rgba(255, 255, 255, 0) 100%);
+    background: linear-gradient(to right,
+            rgba(0, 0, 0, 0.75),
+            rgba(0, 0, 0, 0.4),
+            rgba(0, 0, 0, 0.15));
+    z-index: 1;
 }
+
+.hero-content {
+    z-index: 2;
+    padding-left: 8vw;
+}
+
+.hero-content .container {
+    max-width: 1200px;
+}
+
+.hero-content h1 {
+    text-shadow: 0 10px 35px rgba(0, 0, 0, 0.6);
+}
+
 
 .product-img {
     aspect-ratio: 1 / 1;
