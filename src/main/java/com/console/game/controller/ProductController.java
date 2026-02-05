@@ -1,14 +1,20 @@
 package com.console.game.controller;
 
 import com.console.game.model.Product;
+import com.console.game.service.CategoryService;
 import com.console.game.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -17,22 +23,42 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private CategoryService categoryService;
+
     // Trang chủ
     @GetMapping({ "/", "/home", "/home/index" })
     public String home(Model model) {
         // Lấy danh sách sản phẩm hiển thị trang chủ
-        model.addAttribute("products", productService.getAllActiveProducts());
+        List<Product> products = productService.getAllActiveProducts();
+        System.out.println("So luong san pham: " + products.size());
+        model.addAttribute("products", products);
         return "home/index";
     }
 
-    // Danh sách sản phẩm (có hỗ trợ tìm kiếm)
+    // Danh sách sản phẩm tìm kiếm đa điều kiện
     @GetMapping("/product/list")
-    public String listAll(Model model, @RequestParam(value = "keyword", required = false) String keyword) {
-        if (keyword != null && !keyword.isEmpty()) {
-            model.addAttribute("products", productService.searchProducts(keyword));
-        } else {
-            model.addAttribute("products", productService.getAllActiveProducts());
-        }
+    public String listAll(
+            Model model,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) Integer categoryId,
+            @RequestParam(required = false) BigDecimal maxPrice,
+            @RequestParam(defaultValue = "0") int page) {
+        int size = 9; // 9 sản phẩm / trang
+
+        PageRequest pageable = PageRequest.of(page, size, Sort.by("productId").descending());
+        Page<Product> productPage = productService.filterProducts(keyword, categoryId, maxPrice, pageable);
+
+        model.addAttribute("products", productPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", productPage.getTotalPages());
+
+        // giữ lại filter khi chuyển trang
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("categoryId", categoryId);
+        model.addAttribute("maxPrice", maxPrice);
+
+        model.addAttribute("categories", categoryService.getAllCategory());
         return "product/list";
     }
 
@@ -40,7 +66,7 @@ public class ProductController {
     @GetMapping("/product/detail/{id}")
     public String detail(@PathVariable("id") Integer id, Model model) {
         Optional<Product> product = productService.getProductById(id);
-        
+
         if (product.isPresent()) {
             model.addAttribute("p", product.get());
             return "product/detail";

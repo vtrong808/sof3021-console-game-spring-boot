@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "Order_Items")
+@Table(name = "order_items")
 @Data
 public class OrderItem {
     @Id
