@@ -16,6 +16,9 @@ import com.console.game.model.Product;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<Product> findByIsActiveTrue();
 
+    // Load sản phẩm lên trang chủ có phân trang
+    Page<Product> findByIsActiveTrue(Pageable pageable);
+
     // Tìm kiếm theo tên (Tối ưu hơn)
     @Query("SELECT DISTINCT p FROM Product p WHERE p.isActive = true AND p.productName LIKE %:keyword%")
     List<Product> searchProducts(@Param("keyword") String keyword);

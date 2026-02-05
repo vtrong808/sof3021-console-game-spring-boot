@@ -28,11 +28,18 @@ public class ProductController {
 
     // Trang chủ
     @GetMapping({ "/", "/home", "/home/index" })
-    public String home(Model model) {
-        // Lấy danh sách sản phẩm hiển thị trang chủ
-        List<Product> products = productService.getAllActiveProducts();
-        System.out.println("So luong san pham: " + products.size());
-        model.addAttribute("products", products);
+    public String home(
+            Model model,
+            @RequestParam(defaultValue = "0") int page) {
+        int size = 16; // 16 sản phẩm / trang
+
+        PageRequest pageable = PageRequest.of(page, size, Sort.by("productId").descending());
+        Page<Product> productPage = productService.getActiveProducts(pageable);
+
+        model.addAttribute("products", productPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", productPage.getTotalPages());
+
         return "home/index";
     }
 
@@ -82,4 +89,5 @@ public class ProductController {
         // TODO: Bổ sung method findByCategoryId vào ProductService sau
         return "redirect:/product/list";
     }
+
 }

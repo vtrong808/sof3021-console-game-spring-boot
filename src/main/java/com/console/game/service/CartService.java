@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface CartService {
+    int getCartItemCount(User user);
+
     void addToCart(Integer productId, Integer quantity, String email); // Thêm sản phẩm vào giỏ
 
     List<CartItem> getCartItems(User user); // Lấy danh sách mặt hàng trong giỏ

@@ -19,16 +19,14 @@
             <div>
                 <h1 class="h2 fw-bold mb-2">Đơn hàng #<span th:text="${order.orderId}"></span></h1>
                 <p class="text-muted mb-0">
-                    Đặt ngày: 
+                    Đặt ngày:
                     <!-- Kiểm tra nếu có biến orderDate thì mới hiển thị, tránh lỗi logic cũ -->
-                    <span th:if="${order.orderDate}" th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}">--/--/----</span>
+                    <span th:if="${order.orderDate}"
+                        th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}">--/--/----</span>
                     <span th:unless="${order.orderDate}">Đang cập nhật</span>
                 </p>
             </div>
             <div class="d-flex flex-wrap gap-3">
-                <button class="btn btn-outline-secondary px-4 py-2 rounded-pill">
-                    <i class="fas fa-download me-2"></i> Tải hóa đơn
-                </button>
                 <button class="btn btn-primary px-5 py-2 rounded-pill shadow">
                     <i class="fas fa-truck-fast me-2"></i> Theo dõi vận chuyển
                 </button>
@@ -38,8 +36,10 @@
         <!-- Breadcrumb giữ nguyên logic -->
         <nav aria-label="breadcrumb" class="mb-4">
             <ol class="breadcrumb bg-transparent p-0 mb-0">
-                <li class="breadcrumb-item"><a th:href="@{/order/list}" class="text-muted text-decoration-none">Lịch sử đơn hàng</a></li>
-                <li class="breadcrumb-item active fw-bold" aria-current="page">Chi tiết đơn #<span th:text="${order.orderId}"></span></li>
+                <li class="breadcrumb-item"><a th:href="@{/order/list}" class="text-muted text-decoration-none">Lịch sử
+                        đơn hàng</a></li>
+                <li class="breadcrumb-item active fw-bold" aria-current="page">Chi tiết đơn #<span
+                        th:text="${order.orderId}"></span></li>
             </ol>
         </nav>
 
@@ -49,43 +49,54 @@
                 <div class="card border-0 shadow-sm rounded-4 mb-4">
                     <div class="card-body p-5">
                         <h4 class="fw-bold mb-4">Sản phẩm đã mua</h4>
-                        
+
                         <div class="space-y-4">
                             <!-- Loop Logic từ Giao diện 1 -->
                             <div th:each="item : ${order.orderItems}" class="d-flex gap-4 mb-4 pb-4 border-bottom">
                                 <div class="flex-shrink-0">
-                                    <img th:src="@{${item.product.thumbnailUrl}}" class="rounded-3 border" width="90" height="90" style="object-fit: cover;" alt="Ảnh sp">
+                                    <img th:src="@{${item.product.thumbnailUrl}}" class="rounded-3 border" width="90"
+                                        height="90" style="object-fit: cover;" alt="Ảnh sp">
                                 </div>
                                 <div class="flex-grow-1">
                                     <div class="d-flex justify-content-between">
                                         <div>
-                                            <h6 class="fw-bold mb-1" th:text="${item.product.productName}">Tên sản phẩm</h6>
+                                            <h6 class="fw-bold mb-1" th:text="${item.product.productName}">Tên sản phẩm
+                                            </h6>
                                             <!-- Logic giá: priceAtPurchase từ Giao diện 1 -->
-                                            <small class="text-muted">Đơn giá: <span th:text="${#numbers.formatDecimal(item.priceAtPurchase, 0, 'COMMA', 0, 'POINT')}"></span> đ</small>
+                                            <small class="text-muted">Đơn giá: <span
+                                                    th:text="${#numbers.formatDecimal(item.priceAtPurchase, 0, 'COMMA', 0, 'POINT')}"></span>
+                                                đ</small>
                                         </div>
                                         <div class="text-end">
                                             <!-- Logic thành tiền: priceAtPurchase * quantity -->
-                                            <span class="fw-bold text-primary" 
-                                                  th:text="${#numbers.formatDecimal(item.priceAtPurchase * item.quantity, 0, 'COMMA', 0, 'POINT')} + ' đ'">
-                                                  Thành tiền
+                                            <span class="fw-bold text-primary"
+                                                th:text="${#numbers.formatDecimal(item.priceAtPurchase * item.quantity, 0, 'COMMA', 0, 'POINT')} + ' đ'">
+                                                Thành tiền
                                             </span>
-                                            <div class="text-muted small mt-1">x<span th:text="${item.quantity}"></span></div>
+                                            <div class="text-muted small mt-1">x<span th:text="${item.quantity}"></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="d-flex justify-content-between align-items-center mt-3">
                             <span class="text-muted">Tổng tiền hàng</span>
-                            <span class="fw-bold fs-5" th:text="${#numbers.formatDecimal(order.totalAmount, 0, 'COMMA', 0, 'POINT')} + ' đ'"></span>
+                            <span class="fw-bold fs-5"
+                                th:text="${#numbers.formatDecimal(order.totalAmount, 0, 'COMMA', 0, 'POINT')} + ' đ'"></span>
                         </div>
                     </div>
                 </div>
+                <div class="d-flex align-items-center"> <a th:href="@{/order/list}"
+                        class="btn btn-outline-secondary rounded-pill px-4">
+                        <i class="fas fa-arrow-left me-2"></i> Quay lại danh sách
+                    </a>
+                    <a th:href="@{/order/list}" class="btn btn-outline-danger rounded-pill px-4 ms-auto">
+                        <i class="fas fa-times   me-2"></i> Hủy đơn hàng
+                    </a>
+                </div>
 
-                <a th:href="@{/order/list}" class="btn btn-outline-secondary rounded-pill px-4">
-                    <i class="fas fa-arrow-left me-2"></i> Quay lại danh sách
-                </a>
             </div>
 
             <!-- Cột phải: Thông tin -->
@@ -127,9 +138,9 @@
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <span class="text-muted">Trạng thái</span>
-                            <span class="badge bg-warning text-dark" 
-                                  th:classappend="${order.status.name() == 'DELIVERED' ? 'bg-success text-white' : ''}"
-                                  th:text="${order.status}">PENDING</span>
+                            <span class="badge bg-warning text-dark"
+                                th:classappend="${order.status.name() == 'DELIVERED' ? 'bg-success text-white' : ''}"
+                                th:text="${order.status}">PENDING</span>
                         </div>
                     </div>
                 </div>

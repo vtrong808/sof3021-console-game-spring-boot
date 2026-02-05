@@ -51,9 +51,9 @@
                     Ưu đãi độc quyền với console, tay cầm và phụ kiện gaming cao cấp.
                   </p>
 
-                  <button
+                  <button th:href="@{/product/list}"
                     class="btn btn-success btn-lg px-5 py-3 rounded-pill fw-bold shadow-lg animate__animated animate__fadeInUp animate__delay-2s">
-                    Mua ngay
+                    <a th:href="@{/product/list}" style="color: white">Mua ngay</a>
                     <i class="bi bi-arrow-right ms-2"></i>
                   </button>
                 </div>
@@ -105,6 +105,33 @@
           </div>
         </div>
       </div>
+      <nav th:if="${totalPages > 1}" class="mt-5">
+        <ul class="pagination justify-content-center">
+
+          <!-- Previous -->
+          <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+            <a class="page-link" th:href="@{/(page=${currentPage - 1})}">
+              &laquo;
+            </a>
+          </li>
+
+          <!-- Page numbers -->
+          <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+            th:classappend="${i == currentPage} ? 'active'">
+            <a class="page-link" th:href="@{/(page=${i})}" th:text="${i + 1}">
+            </a>
+          </li>
+
+          <!-- Next -->
+          <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
+            <a class="page-link" th:href="@{/(page=${currentPage + 1})}">
+              &raquo;
+            </a>
+          </li>
+
+        </ul>
+      </nav>
+
     </section>
 
     <section class="container-xxl px-4 py-5 bg-light rounded-4 my-5">
@@ -119,41 +146,6 @@
           <a th:href="@{/product/list}" class="btn btn-outline-dark px-4 py-3 fw-bold">
             Xem tất cả
           </a>
-        </div>
-      </div>
-    </section>
-
-    <section class="py-5 bg-light">
-      <div class="container">
-        <h2 class="text-center fw-bold mb-5 display-5 text-dark">
-          SẢN PHẨM MỚI
-        </h2>
-
-        <div class="row g-4">
-          <div class="col-lg-6">
-            <div class="card border-0 shadow-lg overflow-hidden rounded-4 position-relative h-100 new-arrival-card">
-
-              <div class="ratio ratio-4x3 overflow-hidden">
-                <img
-                  src="https://cdn.haloshop.vn/image/catalog/sony/ps5/ps5-slim-standard-edition/ps5-slim-standard-edition-white-02.jpg"
-                  class="card-img-top object-fit-cover" alt="Sản phẩm mới">
-              </div>
-
-              <div class="card-img-overlay d-flex flex-column justify-content-end align-items-center text-center p-4
-                   bg-gradient-to-t from-black/80 via-black/50 to-transparent">
-                <h3 class="card-title text-white fw-bold mb-3 display-6 lh-1">
-                  PlayStation 5 Slim
-                </h3>
-                <p class="text-white-75 mb-4 fs-5 fw-light">
-                  Thiết kế mới, nhỏ gọn hơn
-                </p>
-                <a th:href="@{/product/list}" class="btn btn-success btn-lg fw-bold rounded-pill px-5 py-3 shadow-lg">
-                  MUA NGAY
-                </a>
-
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>

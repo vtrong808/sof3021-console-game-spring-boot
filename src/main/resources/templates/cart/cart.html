@@ -18,14 +18,15 @@
         <!-- Breadcrumb nếu muốn giữ lại của mẫu 1 -->
         <nav aria-label="breadcrumb" class="mb-4">
             <ol class="breadcrumb bg-transparent p-0">
-                <li class="breadcrumb-item"><a th:href="@{/home/index}" class="text-muted text-decoration-none">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/home/index}" class="text-muted text-decoration-none">Trang
+                        chủ</a></li>
                 <li class="breadcrumb-item active fw-bold">Giỏ hàng</li>
             </ol>
         </nav>
 
         <div class="row g-5">
             <!-- Cột bên trái: Danh sách sản phẩm (Có Form & Checkbox) -->
-            <div class="col-lg-8">
+            <div class="col-12">
                 <h1 class="fw-bold mb-4">Giỏ hàng của bạn</h1>
 
                 <div th:if="${cartItems.isEmpty()}" class="alert alert-info text-center">
@@ -41,7 +42,8 @@
                                     <tr>
                                         <!-- Checkbox Select All từ Mẫu 1 -->
                                         <th class="ps-4 py-4" style="width: 50px;">
-                                            <input type="checkbox" id="selectAll" class="form-check-input" style="cursor: pointer;">
+                                            <input type="checkbox" id="selectAll" class="form-check-input"
+                                                style="cursor: pointer;">
                                         </th>
                                         <th class="ps-2 py-4">Sản phẩm</th>
                                         <th class="py-4 d-none d-md-table-cell">Đơn giá</th>
@@ -54,10 +56,9 @@
                                     <tr th:each="item : ${cartItems}">
                                         <!-- Checkbox từng dòng từ Mẫu 1 -->
                                         <td class="ps-4 py-4">
-                                            <input type="checkbox" class="form-check-input cart-checkbox" 
-                                                   name="selectedItemIds" 
-                                                   th:value="${item.cartItemId}"
-                                                   style="cursor: pointer;">
+                                            <input type="checkbox" class="form-check-input cart-checkbox"
+                                                name="selectedItemIds" th:value="${item.cartItemId}"
+                                                style="cursor: pointer;">
                                         </td>
 
                                         <td class="ps-2 py-4">
@@ -65,7 +66,8 @@
                                                 <img th:src="@{${item.product.thumbnailUrl}}" class="rounded-3 border"
                                                     width="90" alt="Ảnh">
                                                 <div>
-                                                    <h6 class="fw-bold mb-1" th:text="${item.product.productName}">Tên sp</h6>
+                                                    <h6 class="fw-bold mb-1" th:text="${item.product.productName}">Tên
+                                                        sp</h6>
                                                     <small class="text-muted"
                                                         th:text="${item.product.brand != null ? item.product.brand.brandName : 'Chưa cập nhật'}">
                                                         Brand
@@ -78,7 +80,7 @@
                                             <strong class="text-dark"
                                                 th:text="${#numbers.formatDecimal(item.product.price, 0, 'COMMA', 0, 'POINT')} + ' đ'">Giá</strong>
                                         </td>
-                                        
+
                                         <td class="py-4">
                                             <div class="input-group input-group-sm" style="max-width: 120px;">
                                                 <a th:href="@{/cart/update/{id}(id=${item.cartItemId}, qty=${item.quantity - 1})}"
@@ -92,12 +94,12 @@
                                                     class="btn btn-outline-secondary">+</a>
                                             </div>
                                         </td>
-                                        
+
                                         <td class="py-4 text-end fw-bold"
                                             th:text="${#numbers.formatDecimal(item.product.price * item.quantity, 0, 'COMMA', 0, 'POINT')} + ' đ'">
                                             Thành tiền
                                         </td>
-                                        
+
                                         <td class="py-4 text-center">
                                             <a th:href="@{/cart/remove/{id}(id=${item.cartItemId})}"
                                                 class="btn btn-link text-danger p-0"
@@ -109,38 +111,36 @@
                                 </tbody>
                             </table>
                         </div>
-                        
+
                         <!-- Nút Thanh toán cho các sản phẩm đã chọn (Logic Mẫu 1) -->
-                        <div class="p-4 bg-white border-top text-end"> 
-                            <span class="text-muted me-2 small fst-italic">* Chọn sản phẩm để thanh toán riêng lẻ hoặc bấm nút thanh toán bên phải để thanh toán tất cả.</span>
+                        <div class="p-4 bg-white border-top text-end">
+                            <span class="text-muted me-2 small fst-italic">* Chọn sản phẩm để thanh toán riêng lẻ hoặc
+                                bấm nút thanh toán bên phải để thanh toán tất cả.</span>
                             <button type="submit" class="btn btn-outline-success fw-bold">
-                                <i class="fas fa-check-double me-1"></i> Thanh toán sản phẩm đã chọn
+                                <i class="fas fa-check-double me-1"></i> Thanh toán sản phẩm
                             </button>
                         </div>
                     </form>
                     <!-- KẾT THÚC FORM -->
                 </div>
 
-                <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-4 mt-5">
-                    <a th:href="@{/product/list}"
-                        class="btn btn-outline-secondary px-4 py-2 d-flex align-items-center gap-2 text-decoration-none">
-                        <i class="fas fa-arrow-left"></i> Tiếp tục mua sắm
-                    </a>
-                </div>
             </div>
 
             <!-- Cột bên phải: Tổng kết (Giữ nguyên Mẫu 2 nhưng nút thanh toán trỏ về checkout chung) -->
-            <div class="col-lg-4" th:unless="${cartItems.isEmpty()}">
-                <div class="card border-0 shadow-lg rounded-4">
-                    <div class="card-body p-5">
+            <div class="col-12" th:unless="${cartItems.isEmpty()}">
+                <div class="card border-0  shadow-sm rounded-4 mb-4 ">
+                    <div class="card-body p-5 ">
                         <h4 class="fw-bold mb-4">Tổng kết</h4>
 
-                        <div class="space-y-3">
+                        <div>
                             <div class="d-flex justify-content-between mb-2">
                                 <span class="text-muted">Tạm tính</span>
                                 <span class="fw-bold"
-                                    th:text="${#numbers.formatDecimal(totalAmount, 0, 'COMMA', 0, 'POINT')} + ' đ'">0 đ</span>
+                                    th:text="${#numbers.formatDecimal(totalAmount, 0, 'COMMA', 0, 'POINT')} + ' đ'">
+                                    0 đ
+                                </span>
                             </div>
+
                             <div class="d-flex justify-content-between mb-2">
                                 <span class="text-muted">Vận chuyển</span>
                                 <span class="text-success fw-bold">Miễn phí</span>
@@ -149,22 +149,24 @@
 
                         <hr class="my-4">
 
-                        <div class="d-flex justify-content-between align-items-end">
+                        <div class="d-flex justify-content-between align-items-center">
                             <strong class="fs-4 fw-bold">Tổng cộng</strong>
-                            <h3 class="fw-black mb-0 text-primary"
-                                th:text="${#numbers.formatDecimal(totalAmount, 0, 'COMMA', 0, 'POINT')} + ' đ'">0 đ</h3>
+                            <span class="fs-3 fw-bold text-primary"
+                                th:text="${#numbers.formatDecimal(totalAmount, 0, 'COMMA', 0, 'POINT')} + ' đ'">
+                                0 đ
+                            </span>
                         </div>
-
-                        <!-- Nút này thanh toán TẤT CẢ (Mặc định của mẫu 1 và 2) -->
-                        <a th:href="@{/order/checkout}"
-                            class="btn btn-success btn-lg w-100 mt-5 py-3 fw-bold rounded-pill shadow-lg">
-                            <i class="fas fa-credit-card me-2"></i>
-                            Thanh toán toàn bộ
-                        </a>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-4 mt-5">
+            <a th:href="@{/product/list}"
+                class="btn btn-outline-secondary px-4 py-2 d-flex align-items-center gap-2 text-decoration-none">
+                <i class="fas fa-arrow-left"></i> Tiếp tục mua sắm
+            </a>
+        </div>
+
     </main>
 
     <div th:replace="layout/footer :: footer"></div>
@@ -172,20 +174,20 @@
 
     <!-- Script xử lý Checkbox từ Mẫu 1 -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             const selectAll = document.getElementById("selectAll");
             const checkboxes = document.querySelectorAll(".cart-checkbox");
-    
+
             // Khi bấm Select All
-            if(selectAll){
+            if (selectAll) {
                 selectAll.addEventListener("change", function () {
                     checkboxes.forEach(cb => cb.checked = this.checked);
                 });
             }
-    
+
             // Khi bấm từng checkbox con
             checkboxes.forEach(cb => {
-                cb.addEventListener("change", function() {
+                cb.addEventListener("change", function () {
                     if (!this.checked) {
                         selectAll.checked = false;
                     } else {

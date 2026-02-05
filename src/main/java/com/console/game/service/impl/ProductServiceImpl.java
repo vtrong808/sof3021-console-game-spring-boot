@@ -24,23 +24,28 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Page<Product> getActiveProducts(Pageable pageable) {     // Load sản phẩm có phân trang cho trang chủ
+        return productRepository.findByIsActiveTrue(pageable);
+    }
+
+    @Override
     public Optional<Product> getProductById(Integer id) {
         return productRepository.findById(id);
     }
 
     @Override
     public List<Product> searchProducts(String keyword) {
-        return productRepository.searchProducts(keyword);   // Tìm kiếm tên tối uue
+        return productRepository.searchProducts(keyword); // Tìm kiếm tên tối uue
     }
 
     @Override
     public List<Product> findByCategoryCategoryId(Integer categoryId) {
-        return productRepository.findByCategoryCategoryId(categoryId);  // Tìm theo loại
+        return productRepository.findByCategoryCategoryId(categoryId); // Tìm theo loại
     }
 
     @Override
     public List<Product> getProductsByMaxPrice(BigDecimal price) {
-        return productRepository.findByPriceLessThanEqual(price);   // Tìm theo giá
+        return productRepository.findByPriceLessThanEqual(price); // Tìm theo giá
     }
 
     @Override
@@ -50,6 +55,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<Product> filterProducts(String keyword, Integer categoryId, BigDecimal maxPrice, Pageable pageable) {
-        return productRepository.filterProducts(keyword, categoryId, maxPrice, pageable);   //Tìm kiếm đa điều kiện và phân trang
+        return productRepository.filterProducts(keyword, categoryId, maxPrice, pageable); // Tìm kiếm đa điều kiện và
+                                                                                          // phân trang
     }
 }
