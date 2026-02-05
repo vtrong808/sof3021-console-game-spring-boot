@@ -28,23 +28,23 @@ public class DashboardAController {
     private UserService userService;
 
     @GetMapping("/dashboard")
-    public String dashboard(
-            @RequestParam(defaultValue = "2026") int year,
-            Model model) {
-
+    public String dashboard(@RequestParam(defaultValue = "2026") int year, Model model) {
+        // 1. Số liệu thống kê Cards
         model.addAttribute("totalRevenue", dashboardService.getTotalRevenue());
         model.addAttribute("totalOrders", dashboardService.getTotalOrders());
+        model.addAttribute("totalUsers", userService.getTotalUsers());
+        model.addAttribute("lowStockCount", dashboardService.getLowStockProductCount()); // Mới
 
-        model.addAttribute("totalUsers", userService.getTotalUsers()); // ✅ thêm
-
+        // 2. Biểu đồ doanh thu (Chart)
         List<MonthlyRevenueDTO> revenues = orderRepository.getMonthlyRevenue(year);
         model.addAttribute("monthlyRevenues", revenues);
+        model.addAttribute("selectedYear", year); // Để giữ lại giá trị select box
 
+        // 3. Danh sách
         model.addAttribute("recentOrders", dashboardService.getRecentOrders());
+        model.addAttribute("topSellingProducts", dashboardService.getTopSellingProducts()); // Mới
 
         model.addAttribute("menu", "dashboard");
-
         return "admin/dashboard";
     }
-
 }

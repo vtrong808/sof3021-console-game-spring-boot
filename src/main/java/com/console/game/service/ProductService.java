@@ -1,5 +1,6 @@
 package com.console.game.service;
 
+import com.console.game.dto.ProductDTO;
 import com.console.game.model.Product;
 
 import java.math.BigDecimal;
@@ -25,5 +26,11 @@ public interface ProductService {
 
     List<Product> filterProducts(String keyword, Integer categoryId, BigDecimal maxPrice); // Lọc đa điều kiện
 
-    Page<Product> filterProducts(String keyword, Integer categoryId, BigDecimal maxPrice, Pageable pageable);   // Tìm kiếm đa điều kiện và phân trang
+    Page<Product> filterProducts(String keyword, Integer categoryId, BigDecimal maxPrice, Pageable pageable); 
+
+    Product saveProduct(ProductDTO productDTO);
+
+    Product updateProduct(Integer id, ProductDTO productDTO);
+
+    void deleteProduct(Integer id);
 }

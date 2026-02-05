@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản Lý Đơn Hàng</title>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link th:href="@{/css/admin.css}" rel="stylesheet" />
@@ -13,8 +12,8 @@
 
 <body class="bg-light">
     <div th:replace="layout/sidebar :: sidebar"></div>
-    <div class="flex-grow-1" id="page-content-wrapper">
 
+    <div class="flex-grow-1" id="page-content-wrapper">
         <nav class="navbar navbar-expand navbar-light bg-white shadow-sm sticky-top px-4">
             <div class="d-flex align-items-center gap-4 w-100">
                 <h4 class="fw-bold text-dark mb-0">Quản lý đơn hàng</h4>
@@ -22,70 +21,12 @@
         </nav>
 
         <div class="p-4 p-lg-5">
-            <div class="d-flex align-items-center gap-3 ms-4 ">
-                <button class="btn btn-success rounded-pill px-4 py-2 d-flex align-items-center gap-2 mb-3 ms-auto">
-                    <i class="fas fa-plus"></i>
-                    Tạo đơn hàng mới
-                </button>
-            </div>
-
             <div class="row g-4 mb-5">
                 <div class="col-xl-3 col-md-6">
                     <div class="card border-0 shadow-sm h-100">
                         <div class="card-body p-4">
-                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                <div class="bg-primary bg-opacity-10 p-3 rounded">
-                                    <i class="fas fa-dollar-sign text-primary fs-4"></i>
-                                </div>
-                                <span class="badge bg-success">+0%</span>
-                            </div>
-                            <p class="text-muted mb-1">Tổng doanh thu</p>
-                            <h4 class="fw-bold mb-0">0</h4>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xl-3 col-md-6">
-                    <div class="card border-0 shadow-sm h-100">
-                        <div class="card-body p-4">
-                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                <div class="bg-warning bg-opacity-10 p-3 rounded">
-                                    <i class="fas fa-clock text-warning fs-4"></i>
-                                </div>
-                                <span class="badge bg-warning text-dark">Cần xử lý</span>
-                            </div>
-                            <p class="text-muted mb-1">Đơn chờ xử lý</p>
-                            <h4 class="fw-bold mb-0">0</h4>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xl-3 col-md-6">
-                    <div class="card border-0 shadow-sm h-100">
-                        <div class="card-body p-4">
-                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                <div class="bg-info bg-opacity-10 p-3 rounded">
-                                    <i class="fas fa-truck text-info fs-4"></i>
-                                </div>
-                                <span class="badge bg-info">+0%</span>
-                            </div>
-                            <p class="text-muted mb-1">Đơn đang giao</p>
-                            <h4 class="fw-bold mb-0">0</h4>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xl-3 col-md-6">
-                    <div class="card border-0 shadow-sm h-100">
-                        <div class="card-body p-4">
-                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                <div class="bg-danger bg-opacity-10 p-3 rounded">
-                                    <i class="fas fa-ban text-danger fs-4"></i>
-                                </div>
-                                <span class="badge bg-danger">0%</span>
-                            </div>
-                            <p class="text-muted mb-1">Tỷ lệ hủy đơn</p>
-                            <h4 class="fw-bold mb-0">0%</h4>
+                            <p class="text-muted mb-1">Tổng đơn hàng</p>
+                            <h4 class="fw-bold mb-0" id="totalOrders">0</h4>
                         </div>
                     </div>
                 </div>
@@ -93,31 +34,15 @@
 
             <div class="card border-0 shadow-sm mb-5">
                 <div class="card-body p-4">
-                    <div class="d-flex flex-wrap gap-3 mb-4">
-                        <button class="btn btn-success rounded-pill px-4 py-2 fw-bold">Tất cả đơn hàng</button>
-                        <button class="btn btn-outline-secondary rounded-pill px-4 py-2">Chờ xử lý</button>
-                        <button class="btn btn-outline-secondary rounded-pill px-4 py-2">Đang giao</button>
-                        <button class="btn btn-outline-secondary rounded-pill px-4 py-2">Hoàn thành</button>
-                        <button class="btn btn-outline-secondary rounded-pill px-4 py-2">Đã hủy</button>
-                    </div>
-
-                    <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center">
-                        <div class="text-muted small">
-                            Hiển thị 1-50
-                        </div>
-                        <div class="d-flex gap-2">
-                            <button class="btn btn-outline-secondary btn-sm rounded-pill">
-                                <i class="fas fa-filter me-1"></i> Lọc theo ngày
-                            </button>
-                            <button class="btn btn-outline-success btn-sm rounded-pill">
-                                <i class="fas fa-download me-1"></i> Xuất Excel
-                            </button>
-                        </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="fw-bold mb-0">Danh sách đơn hàng</h5>
+                        <button class="btn btn-outline-success btn-sm rounded-pill" onclick="loadOrders()">
+                            <i class="fas fa-sync-alt me-1"></i> Làm mới
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Bảng đơn hàng -->
             <div class="card border-0 shadow-sm overflow-hidden">
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0">
@@ -126,66 +51,225 @@
                                 <th>Mã đơn</th>
                                 <th>Khách hàng</th>
                                 <th>Ngày đặt</th>
-                                <th>Thành tiền</th>
+                                <th>Tổng tiền</th>
                                 <th>Trạng thái</th>
                                 <th class="text-end">Hành động</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td class="fw-bold text-success"></td>
-                                <td>
-                                    <div class="d-flex flex-column">
-                                        <strong></strong>
-                                        <small class="text-muted"></small>
-                                    </div>
-                                </td>
-                                <td></td>
-                                <td class="fw-bold text-success"></td>
-                                <td><span class="badge bg-warning text-dark rounded-pill px-3 py-2"></span>
-                                </td>
-                                <td class="text-end">
-                                    <select class="form-select form-select-sm w-auto d-inline-block rounded-pill">
-                                        <option selected>Chờ xử lý</option>
-                                        <option>Đang giao</option>
-                                        <option>Hoàn thành</option>
-                                        <option>Hủy</option>
-                                    </select>
-                                    <button class="btn btn-sm btn-outline-primary ms-2">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-
-                        </tbody>
+                        <tbody id="orderTableBody">
+                            </tbody>
                     </table>
                 </div>
-                <nav aria-label="Phân trang danh mục" class="mt-5">
-                    <ul class="pagination pagination-sm justify-content-center">
-                        <li class="page-item">
-                            <a class="page-link rounded-circle me-2" href="#" aria-label="Trang trước">
-                                <i class="fas fa-chevron-left"></i>
-                            </a>
-                        </li>
-                        <li class="page-item active"><a
-                                class="page-link bg-success border-success text-white rounded-circle mx-1"
-                                href="#">1</a></li>
-                        <li class="page-item"><a class="page-link rounded-circle mx-1" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link rounded-circle mx-1" href="#">3</a></li>
-                        <li class="page-item disabled"><span class="page-link mx-1">...</span></li>
-                        <li class="page-item"><a class="page-link rounded-circle mx-1" href="#">12</a></li>
-                        <li class="page-item">
-                            <a class="page-link rounded-circle ms-2" href="#" aria-label="Trang sau">
-                                <i class="fas fa-chevron-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="orderDetailModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow rounded-4">
+                <div class="modal-header border-bottom-0">
+                    <h5 class="modal-title fw-bold">Chi tiết đơn hàng <span id="modalOrderId" class="text-primary"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <p class="text-muted small mb-1">Người nhận</p>
+                            <h6 class="fw-bold" id="modalCustomer"></h6>
+                            <p class="small mb-0"><i class="fas fa-phone me-2"></i><span id="modalPhone"></span></p>
+                            <p class="small text-muted"><i class="fas fa-map-marker-alt me-2"></i><span id="modalAddress"></span></p>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <p class="text-muted small mb-1">Ngày đặt</p>
+                            <h6 class="fw-bold" id="modalDate"></h6>
+                            <p class="text-muted small mb-0" id="modalPayment"></p>
+                            <p class="fst-italic text-warning small mt-2" id="modalNote"></p>
+                        </div>
+                    </div>
+
+                    <div class="bg-light rounded-4 p-3">
+                        <table class="table table-borderless mb-0">
+                            <thead class="text-muted small text-uppercase">
+                                <tr>
+                                    <th>Sản phẩm</th>
+                                    <th class="text-center">SL</th>
+                                    <th class="text-end">Đơn giá</th>
+                                    <th class="text-end">Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modalItems">
+                                </tbody>
+                            <tfoot class="border-top">
+                                <tr>
+                                    <td colspan="3" class="text-end fw-bold pt-3">Tổng cộng:</td>
+                                    <td class="text-end fw-bold text-success fs-5 pt-3" id="modalTotal"></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer border-top-0">
+                    <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Đóng</button>
+                </div>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
 
+    <script>
+        const API_ORDER = '/api/admin/orders';
+        
+        // Enum Status màu sắc
+        const statusColors = {
+            'PENDING': 'bg-warning text-dark',
+            'CONFIRMED': 'bg-info text-dark',
+            'SHIPPING': 'bg-primary',
+            'DELIVERED': 'bg-success',
+            'CANCELLED': 'bg-danger',
+            'RETURNED': 'bg-secondary'
+        };
+
+        const statusLabels = {
+            'PENDING': 'Chờ xử lý',
+            'CONFIRMED': 'Đã xác nhận',
+            'SHIPPING': 'Đang giao',
+            'DELIVERED': 'Hoàn thành',
+            'CANCELLED': 'Đã hủy',
+            'RETURNED': 'Trả hàng'
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadOrders();
+        });
+
+        // 1. Load danh sách
+        async function loadOrders() {
+            try {
+                const res = await fetch(API_ORDER);
+                const orders = await res.json();
+                
+                document.getElementById('totalOrders').innerText = orders.length;
+                const tbody = document.getElementById('orderTableBody');
+                tbody.innerHTML = '';
+
+                orders.forEach(o => {
+                    const row = `
+                        <tr>
+                            <td class="fw-bold text-primary">#${o.orderId}</td>
+                            <td>
+                                <div class="d-flex flex-column">
+                                    <strong class="text-dark">${o.customerName}</strong>
+                                    <small class="text-muted">${o.phoneNumber || ''}</small>
+                                </div>
+                            </td>
+                            <td>${formatDate(o.orderDate)}</td>
+                            <td class="fw-bold text-success">${formatMoney(o.totalAmount)}</td>
+                            <td>
+                                <select class="form-select form-select-sm rounded-pill status-select ${statusColors[o.status]}" 
+                                        onchange="updateStatus(${o.orderId}, this)"
+                                        style="font-weight:bold; width: 140px;">
+                                    ${renderStatusOptions(o.status)}
+                                </select>
+                            </td>
+                            <td class="text-end">
+                                <button class="btn btn-sm btn-outline-primary rounded-circle" onclick="viewDetail(${o.orderId})" title="Xem chi tiết">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
+                });
+            } catch (err) { console.error(err); }
+        }
+
+        // 2. Render Options cho Select (Để người dùng chọn trạng thái)
+        function renderStatusOptions(currentStatus) {
+            const statuses = ['PENDING', 'CONFIRMED', 'SHIPPING', 'DELIVERED', 'CANCELLED'];
+            let html = '';
+            statuses.forEach(s => {
+                const selected = s === currentStatus ? 'selected' : '';
+                html += `<option value="${s}" ${selected} class="bg-white text-dark">${statusLabels[s]}</option>`;
+            });
+            return html;
+        }
+
+        // 3. Cập nhật trạng thái
+        async function updateStatus(id, selectElement) {
+            const newStatus = selectElement.value;
+            if(!confirm(`Bạn muốn chuyển trạng thái đơn #${id} sang ${statusLabels[newStatus]}?`)) {
+                loadOrders(); // Reset lại nếu Cancel
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_ORDER}/${id}/status?status=${newStatus}`, {
+                    method: 'PUT'
+                });
+                if(res.ok) {
+                    alert('Cập nhật thành công!');
+                    loadOrders(); // Load lại để cập nhật màu sắc
+                } else {
+                    alert('Lỗi cập nhật!');
+                }
+            } catch(err) { console.error(err); }
+        }
+
+        // 4. Xem chi tiết (Mở Modal)
+        async function viewDetail(id) {
+            try {
+                const res = await fetch(`${API_ORDER}/${id}`);
+                const o = await res.json();
+
+                // Fill thông tin chung
+                document.getElementById('modalOrderId').innerText = '#' + o.orderId;
+                document.getElementById('modalCustomer').innerText = o.customerName;
+                document.getElementById('modalPhone').innerText = o.phoneNumber;
+                document.getElementById('modalAddress').innerText = o.address;
+                document.getElementById('modalDate').innerText = formatDate(o.orderDate);
+                document.getElementById('modalPayment').innerText = `Thanh toán: ${o.paymentMethod}`;
+                document.getElementById('modalNote').innerText = o.note ? `Ghi chú: ${o.note}` : '';
+                document.getElementById('modalTotal').innerText = formatMoney(o.totalAmount);
+
+                // Fill danh sách items
+                const tbody = document.getElementById('modalItems');
+                tbody.innerHTML = '';
+                o.items.forEach(item => {
+                    const row = `
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <img src="${item.productThumbnail || '/images/default.png'}" class="rounded" width="40" height="40">
+                                    <span class="fw-semibold">${item.productName}</span>
+                                </div>
+                            </td>
+                            <td class="text-center">x${item.quantity}</td>
+                            <td class="text-end">${formatMoney(item.price)}</td>
+                            <td class="text-end fw-bold">${formatMoney(item.price * item.quantity)}</td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
+                });
+
+                // Show Modal
+                const modal = new bootstrap.Modal(document.getElementById('orderDetailModal'));
+                modal.show();
+
+            } catch(err) { console.error(err); }
+        }
+
+        // Helper: Format tiền
+        function formatMoney(amount) {
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+        }
+
+        // Helper: Format ngày
+        function formatDate(dateString) {
+            if(!dateString) return '';
+            const date = new Date(dateString);
+            return date.toLocaleString('vi-VN');
+        }
+    </script>
+</body>
 </html>

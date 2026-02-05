@@ -4,126 +4,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản Lý Danh Mục </title>
-
+    <title>Quản Lý Danh Mục</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link th:href="@{/css/admin.css}" rel="stylesheet" />
-
 </head>
 
 <body class="bg-light">
     <div th:replace="layout/sidebar :: sidebar"></div>
-    <div class="flex-grow-1" id="page-content-wrapper">
-        <nav class="navbar bg-white shadow-sm sticky-top px-4">
-            <h4 class="fw-bold mb-0">Quản lý danh mục</h4>
-        </nav>
 
+    <div class="flex-grow-1" id="page-content-wrapper">
+
+        <nav class="navbar navbar-expand navbar-light bg-white shadow-sm sticky-top px-4">
+            <div class="d-flex align-items-center gap-4 w-100">
+                <h4 class="fw-bold text-dark mb-0">Quản lý danh mục</h4>
+            </div>
+        </nav>
 
         <div class="p-4 p-lg-5">
 
-            <div class="card border-0 shadow-sm mb-5">
-                <div class="card-body p-5">
-                    <h5 class="card-title fw-bold mb-4">Danh mục sản phẩm</h5>
+            <div class="row g-4 mb-5">
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow-sm h-100 sticky-top" style="top: 100px; z-index: 0;"> 
+                        <div class="card-body p-5">
+                            <h5 class="fw-bold mb-4" id="formTitle">Thêm Danh Mục Mới</h5>
+                            <form id="categoryForm" onsubmit="saveCategory(event)">
+                                <input type="hidden" id="categoryId">
 
-                    <form class="row g-4">
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold small">Mã danh mục</label>
-                            <input type="text" class="form-control form-control-lg rounded-4" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold small">Tên danh mục</label>
-                            <input type="text" class="form-control form-control-lg rounded-4">
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label fw-bold small">Mô tả</label>
-                            <textarea class="form-control rounded-4" rows="3"></textarea>
-                        </div>
-                        <div class="col-12 text-end mt-4">
-                            <button type="reset" class="btn btn-outline-danger btn-lg px-4 me-3 btn-action">
-                                Hủy
-                            </button>
+                                <div class="mb-4">
+                                    <label class="form-label fw-bold small">Tên danh mục</label>
+                                    <input type="text" id="categoryName" class="form-control form-control-lg rounded-4"
+                                        placeholder="Ví dụ: Console, Game..." required>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label fw-bold small">Mô tả</label>
+                                    <textarea id="categoryDescription" class="form-control rounded-4" rows="4"
+                                        placeholder="Mô tả ngắn về danh mục..."></textarea>
+                                </div>
 
-                            <button type="submit" class="btn btn-success btn-lg px-4  btn-action">
-                                Thêm mới
-                            </button>
-                        </div>
+                                <div class="mb-4">
+                                    <label class="form-label fw-bold small">Trạng thái</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="isActive" checked>
+                                        <label class="form-check-label" for="isActive">Đang hoạt động</label>
+                                    </div>
+                                </div>
 
-
-                    </form>
-                </div>
-            </div>
-            <div class="card border-0 shadow-sm">
-                <div class="card-body p-5">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h5 class="card-title fw-bold mb-0">Danh sách danh mục hiện có</h5>
-                        <div class="d-flex gap-2">
-                            <button class="btn btn-outline-secondary btn-sm rounded-pill">
-                                <i class="fas fa-filter me-1"></i> Lọc
-                            </button>
-                            <button class="btn btn-outline-secondary btn-sm rounded-pill">
-                                <i class="fas fa-download me-1"></i> Xuất
-                            </button>
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-success btn-lg fw-bold rounded-4">
+                                        <i class="fas fa-save me-2"></i> Lưu danh mục
+                                    </button>
+                                    <button type="button" onclick="resetForm()" class="btn btn-light btn-lg fw-bold rounded-4 text-muted">
+                                        <i class="fas fa-redo me-2"></i> Làm mới
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
+                </div>
 
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Tên danh mục</th>
-                                    <th>Mô tả</th>
-                                    <th>Trạng thái</th>
-                                    <th class="text-end">Hành động</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="fw-bold text-success">Mã</td>
-                                    <td class="fw-bold">Tên danh mục</td>
-                                    <td class="text-muted">Mô tả</td>
-                                    <td><span class="badge bg-success rounded-pill px-3 py-2">Hoạt động</span></td>
-                                    <td class="text-end">
-                                        <button class="btn btn-sm btn-outline-primary me-2">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-danger">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h5 class="fw-bold mb-0">Danh sách danh mục</h5>
+                                <div class="input-group w-auto">
+                                    <input type="text" id="searchInput" class="form-control rounded-pill ps-4" placeholder="Tìm kiếm..." onkeyup="filterTable()">
+                                    <button class="btn btn-outline-secondary rounded-pill pe-4 border-start-0">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
 
-                            </tbody>
-                        </table>
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Tên danh mục</th>
+                                            <th>Mô tả</th>
+                                            <th>Trạng thái</th>
+                                            <th class="text-end">Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="categoryTableBody">
+                                        </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-
-                    <nav aria-label="Phân trang danh mục" class="mt-5">
-                        <ul class="pagination pagination-sm justify-content-center">
-                            <li class="page-item">
-                                <a class="page-link rounded-circle me-2" href="#" aria-label="Trang trước">
-                                    <i class="fas fa-chevron-left"></i>
-                                </a>
-                            </li>
-                            <li class="page-item active"><a
-                                    class="page-link bg-success border-success text-white rounded-circle mx-1"
-                                    href="#">1</a></li>
-                            <li class="page-item"><a class="page-link rounded-circle mx-1" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link rounded-circle mx-1" href="#">3</a></li>
-                            <li class="page-item disabled"><span class="page-link mx-1">...</span></li>
-                            <li class="page-item"><a class="page-link rounded-circle mx-1" href="#">12</a></li>
-                            <li class="page-item">
-                                <a class="page-link rounded-circle ms-2" href="#" aria-label="Trang sau">
-                                    <i class="fas fa-chevron-right"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
                 </div>
             </div>
+
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>>
-</body>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const API_URL = '/api/admin/categories';
+
+        // 1. Load danh sách khi mở trang
+        document.addEventListener("DOMContentLoaded", () => {
+            loadCategories();
+        });
+
+        async function loadCategories() {
+            try {
+                const res = await fetch(API_URL);
+                const categories = await res.json();
+                renderTable(categories);
+            } catch (err) { console.error(err); }
+        }
+
+        // 2. Hiển thị bảng
+        function renderTable(data) {
+            const tbody = document.getElementById('categoryTableBody');
+            tbody.innerHTML = '';
+            
+            data.forEach(c => {
+                const row = `
+                    <tr>
+                        <td>#${c.categoryId}</td>
+                        <td class="fw-bold text-primary">${c.categoryName}</td>
+                        <td class="text-muted small">${c.categoryDescription || ''}</td>
+                        <td>
+                            <span class="badge ${c.isActive ? 'bg-success' : 'bg-danger'} rounded-pill px-3 py-2">
+                                ${c.isActive ? 'Active' : 'Inactive'}
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <button class="btn btn-sm btn-outline-primary me-2" onclick="editCategory(${c.categoryId})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteCategory(${c.categoryId})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        // 3. Lưu (Tạo mới / Cập nhật)
+        async function saveCategory(e) {
+            e.preventDefault();
+            
+            const id = document.getElementById('categoryId').value;
+            const method = id ? 'PUT' : 'POST';
+            const url = id ? `${API_URL}/${id}` : API_URL;
+
+            const data = {
+                categoryName: document.getElementById('categoryName').value,
+                categoryDescription: document.getElementById('categoryDescription').value,
+                isActive: document.getElementById('isActive').checked
+            };
+
+            try {
+                const res = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (res.ok) {
+                    alert('Lưu thành công!');
+                    resetForm();
+                    loadCategories();
+                } else {
+                    alert('Lỗi khi lưu!');
+                }
+            } catch (err) { console.error(err); }
+        }
+
+        // 4. Đổ dữ liệu lên form để sửa
+        async function editCategory(id) {
+            try {
+                const res = await fetch(`${API_URL}/${id}`);
+                const c = await res.json();
+
+                document.getElementById('categoryId').value = c.categoryId;
+                document.getElementById('categoryName').value = c.categoryName;
+                document.getElementById('categoryDescription').value = c.categoryDescription;
+                document.getElementById('isActive').checked = c.isActive;
+
+                document.getElementById('formTitle').innerText = "Cập nhật Danh Mục";
+            } catch (err) { console.error(err); }
+        }
+
+        // 5. Xóa
+        async function deleteCategory(id) {
+            if(!confirm('Bạn có chắc muốn xóa?')) return;
+            try {
+                const res = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+                if(res.ok) loadCategories();
+                else alert('Không thể xóa vì danh mục đang chứa sản phẩm!');
+            } catch (err) { console.error(err); }
+        }
+
+        // 6. Reset form
+        function resetForm() {
+            document.getElementById('categoryForm').reset();
+            document.getElementById('categoryId').value = '';
+            document.getElementById('formTitle').innerText = "Thêm Danh Mục Mới";
+            document.getElementById('isActive').checked = true;
+        }
+        
+        // 7. Tìm kiếm nhanh trên client (Optional)
+        function filterTable() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase();
+            const tbody = document.getElementById('categoryTableBody');
+            const rows = tbody.getElementsByTagName('tr');
+
+            for (let i = 0; i < rows.length; i++) {
+                const td = rows[i].getElementsByTagName('td')[1]; // Cột Tên
+                if (td) {
+                    const txtValue = td.textContent || td.innerText;
+                    if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                        rows[i].style.display = "";
+                    } else {
+                        rows[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+</body>
 </html>
