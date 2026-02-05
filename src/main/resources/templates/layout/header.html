@@ -29,6 +29,10 @@
 </head>
 
 <body>
+  <div style="color:red;font-size:12px">
+    USER: <span sec:authentication="name"></span> |
+    ROLES: <span sec:authentication="authorities"></span>
+  </div>
   <nav th:fragment="header" class="navbar navbar-expand-md navbar-light bg-white shadow-sm sticky-top">
     <div class="container-xl px-4">
 
@@ -38,18 +42,24 @@
 
       <div class="collapse navbar-collapse" id="navbarContent">
         <ul class="navbar-nav me-auto gap-4">
+
           <li class="nav-item">
             <a class="nav-link fw-semibold" th:href="@{/}">Trang chủ</a>
           </li>
+
           <li class="nav-item">
             <a class="nav-link fw-semibold" th:href="@{/product/list}">Sản phẩm</a>
           </li>
-          <li class="nav-item">
+
+          <!-- CUSTOMER mới thấy -->
+          <li class="nav-item" sec:authorize="!hasRole('ADMIN')">
             <a class="nav-link fw-semibold" th:href="@{/cart/view}">Giỏ hàng</a>
           </li>
-          <li class="nav-item">
+
+          <li class="nav-item" sec:authorize="!hasRole('ADMIN')">
             <a class="nav-link fw-semibold" th:href="@{/order/list}">Đơn hàng</a>
           </li>
+
         </ul>
 
         <div class="d-flex align-items-center gap-3 ms-auto">
@@ -61,8 +71,8 @@
             <input name="keyword" type="search" class="form-control ps-5 rounded-5" placeholder="Tìm kiếm ...">
           </form>
 
-          <!-- Cart -->
-          <a th:href="@{/cart/view}" class="mini-cart-btn text-decoration-none">
+          <!-- Cart icon - chỉ CUSTOMER mới thấy -->
+          <a th:href="@{/cart/view}" class="mini-cart-btn text-decoration-none" sec:authorize="hasRole('CUSTOMER')">
             <span class="position-relative">
               <i class="fas fa-shopping-cart fs-5"></i>
               <span class="cart-badge" th:text="${cartItemCount}"
@@ -70,22 +80,30 @@
             </span>
           </a>
 
-          <!-- User (đã đăng nhập) -->
-          <div class="dropdown">
+          <!-- Khi CHƯA đăng nhập -->
+          <div sec:authorize="!isAuthenticated()">
+            <a th:href="@{/auth/login}" class="btn btn-outline-success rounded-5 px-3">
+              <i class="fas fa-sign-in-alt me-1"></i> Đăng nhập
+            </a>
+          </div>
+
+          <!-- Khi ĐÃ đăng nhập -->
+          <div class="dropdown" sec:authorize="isAuthenticated()">
             <a class="dropdown-toggle text-decoration-none" href="#" data-bs-toggle="dropdown">
               <img th:src="@{/images/avatar.png}" class="rounded-circle" width="40" height="40">
             </a>
 
             <ul class="dropdown-menu dropdown-menu-end shadow rounded-3">
 
-              <!-- admin -->
-              <li sec:authorize="hasAnyRole('ADMIN','STAFF')">
+              <!-- ADMIN -->
+              <li sec:authorize="hasRole('ADMIN')">
                 <a class="dropdown-item text-black fw-semibold" th:href="@{/admin/dashboard}">
                   <i class="fas fa-gauge me-2"></i> Admin Dashboard
                 </a>
               </li>
 
-              <li>
+              <!-- CUSTOMER -->
+              <li sec:authorize="hasRole('CUSTOMER')">
                 <a class="dropdown-item" th:href="@{/account/edit-profile}">
                   <i class="fas fa-user me-2"></i> Hồ sơ
                 </a>
@@ -95,11 +113,13 @@
                 <hr class="dropdown-divider">
               </li>
 
+              <!-- Logout chỉ khi đăng nhập -->
               <li>
                 <a class="dropdown-item text-danger" th:href="@{/auth/logout}">
                   <i class="fas fa-sign-out-alt me-2"></i> Đăng xuất
                 </a>
               </li>
+
             </ul>
           </div>
 
