@@ -20,6 +20,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
 
+    @Column(unique = true)
+    private String username;
+
     @Column(nullable = false)
     private String fullName;
 
@@ -38,7 +41,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    private Boolean isActive;   // Đã xác thực email chưa
+    private Boolean isActive = true;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

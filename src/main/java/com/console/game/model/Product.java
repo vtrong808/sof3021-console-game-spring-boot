@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
-@Table(name = "products") // nên dùng chữ thường
+@Table(name = "products")
 @Getter
 @Setter
 public class Product extends BaseEntity {

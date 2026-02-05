@@ -31,7 +31,7 @@ public class ProductController {
     public String home(
             Model model,
             @RequestParam(defaultValue = "0") int page) {
-        int size = 16; // 16 sản phẩm / trang
+        int size = 8; // 8 sản phẩm / trang
 
         PageRequest pageable = PageRequest.of(page, size, Sort.by("productId").descending());
         Page<Product> productPage = productService.getActiveProducts(pageable);
@@ -51,7 +51,8 @@ public class ProductController {
             @RequestParam(required = false) Integer categoryId,
             @RequestParam(required = false) BigDecimal maxPrice,
             @RequestParam(defaultValue = "0") int page) {
-        int size = 9; // 9 sản phẩm / trang
+        int size = 8; // 8 sản phẩm / trang
+
 
         PageRequest pageable = PageRequest.of(page, size, Sort.by("productId").descending());
         Page<Product> productPage = productService.filterProducts(keyword, categoryId, maxPrice, pageable);

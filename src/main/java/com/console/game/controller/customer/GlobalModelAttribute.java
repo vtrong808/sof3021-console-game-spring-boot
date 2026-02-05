@@ -1,4 +1,4 @@
-package com.console.game.controller.common;
+package com.console.game.controller.customer;
 
 import com.console.game.model.User;
 import com.console.game.service.CartService;

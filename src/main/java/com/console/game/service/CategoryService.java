@@ -6,4 +6,5 @@ import com.console.game.model.Category;
 
 public interface CategoryService {
     List<Category> getAllCategory();
+    
 }

@@ -3,11 +3,9 @@ package com.console.game.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -15,76 +13,78 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-        // SỬA: Khai báo bằng Interface UserDetailsService thay vì class cụ thể
-        @Autowired
-        private UserDetailsService userDetailsService;
+    @Autowired
+    private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
-        // Cấu hình mã hóa mật khẩu (Không mã hóa - chỉ dùng cho bài tập/test)
-        @SuppressWarnings("deprecation")
-        @Bean
-        public PasswordEncoder passwordEncoder() {
-                return NoOpPasswordEncoder.getInstance();
-        }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return org.springframework.security.crypto.password.NoOpPasswordEncoder.getInstance();
+        // return new BCryptPasswordEncoder(); 
+        // nếu đang test mật khẩu plain text thì đổi lại NoOpPasswordEncoder
+    }
 
-        // Cấu hình Provider xác thực
-        // @Bean
-        // public DaoAuthenticationProvider authenticationProvider() {
-        // DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        // authProvider.setUserDetailsService(userDetailsService);
-        // authProvider.setPasswordEncoder(passwordEncoder());
-        // return authProvider;
-        // }
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        @Bean
-        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-                http
-                                .csrf(csrf -> csrf.disable())
+        http.csrf(csrf -> csrf.disable());
 
-                                .authorizeHttpRequests(auth -> auth
+        http.authorizeHttpRequests(auth -> auth
 
-                                                // 1. PUBLIC – chưa đăng nhập vẫn vào được
-                                                .requestMatchers(
-                                                                "/",
-                                                                "/home/**",
-                                                                "/product/**",
-                                                                "/products/**",
-                                                                "/shop/**",
-                                                                "/auth/**",
-                                                                "/css/**",
-                                                                "/js/**",
-                                                                "/images/**")
-                                                .permitAll()
+                // PUBLIC
+                .requestMatchers(
+                        "/",
+                        "/home/**",
+                        "/product/**",
+                        "/products/**",
+                        "/shop/**",
+                        "/auth/**",
+                        "/css/**",
+                        "/js/**",
+                        "/images/**",
+                        "/oauth2/**"
+                ).permitAll()
 
-                                                // 2. CUSTOMER – phải đăng nhập và có role CUSTOMER
-                                                .requestMatchers(
-                                                                "/cart/**",
-                                                                "/checkout/**",
-                                                                "/order/**",
-                                                                "/account/**")
-                                                .hasRole("CUSTOMER")
+                // CUSTOMER
+                .requestMatchers(
+                        "/cart/**",
+                        "/checkout/**",
+                        "/order/**",
+                        "/account/**"
+                ).hasRole("CUSTOMER")
 
-                                                // 3. ADMIN / STAFF
-                                                .requestMatchers("/admin/**")
-                                                .hasAnyRole("ADMIN", "STAFF")
+                // ADMIN
+                .requestMatchers("/admin/**")
+                .hasAnyRole("ADMIN")
 
-                                                // 4. Bất kỳ request nào khác → cần đăng nhập
-                                                .anyRequest().authenticated())
+                .anyRequest().authenticated()
+        );
 
-                                .formLogin(form -> form
-                                                .loginPage("/auth/login")
-                                                .loginProcessingUrl("/auth/login")
-                                                .usernameParameter("email")
-                                                .passwordParameter("password")
-                                                .defaultSuccessUrl("/", true)
-                                                .failureUrl("/auth/login?error=true")
-                                                .permitAll())
+        // LOGIN LOCAL
+        http.formLogin(form -> form
+                .loginPage("/auth/login")
+                .loginProcessingUrl("/auth/login")
+                .usernameParameter("email")
+                .passwordParameter("password")
+                .defaultSuccessUrl("/", true)
+                .failureUrl("/auth/login?error=true")
+                .permitAll()
+        );
 
-                                .logout(logout -> logout
-                                                .logoutUrl("/auth/logout")
-                                                .logoutSuccessUrl("/auth/login?logout=true")
-                                                .permitAll());
+        // LOGIN GOOGLE
+        http.oauth2Login(oauth -> oauth
+                .loginPage("/auth/login")
+                .successHandler(oAuth2LoginSuccessHandler)
+        );
 
-                return http.build();
-        }
+        // LOGOUT
+        http.logout(logout -> logout
+                .logoutUrl("/auth/logout")
+                .logoutSuccessUrl("/auth/login?logout=true")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .permitAll()
+        );
 
+        return http.build();
+    }
 }

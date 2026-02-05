@@ -42,6 +42,8 @@ public class DashboardAController {
 
         model.addAttribute("recentOrders", dashboardService.getRecentOrders());
 
+        model.addAttribute("menu", "dashboard");
+
         return "admin/dashboard";
     }
 
