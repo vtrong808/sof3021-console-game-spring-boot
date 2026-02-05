@@ -17,6 +17,10 @@ import java.util.Optional;
 
 @Service
 public class CartServiceImpl implements CartService {
+    @Override
+    public int getCartItemCount(User user) {
+        return cartItemRepository.findByUser(user).stream().mapToInt(CartItem::getQuantity).sum();
+    }
 
     @Autowired
     private CartItemRepository cartItemRepository;

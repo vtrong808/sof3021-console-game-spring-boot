@@ -11,10 +11,12 @@ import com.console.game.service.OrderService;
 import com.console.game.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -105,7 +107,8 @@ public class OrderController {
     @PostMapping("/preview")
     public String previewInvoice(
             Principal principal,
-            @ModelAttribute CheckoutDTO checkoutDTO,
+            @Valid @ModelAttribute("checkoutDTO") CheckoutDTO checkoutDTO,
+            BindingResult result,
             Model model,
             HttpSession session) {
 
@@ -114,6 +117,14 @@ public class OrderController {
 
         List<CartItem> items = cartService.getCartItemsByIds(ids, user);
 
+        // ❌ Nếu có lỗi → quay lại trang checkout
+        if (result.hasErrors()) {
+            model.addAttribute("cartItems", items);
+            model.addAttribute("totalAmount", cartService.getTotalAmount(items));
+            return "order/check-out";
+        }
+
+        // ✅ Hợp lệ → sang preview
         model.addAttribute("cartItems", items);
         model.addAttribute("totalAmount", cartService.getTotalAmount(items));
         model.addAttribute("checkout", checkoutDTO);
@@ -138,7 +149,6 @@ public class OrderController {
         Order order = orderService.placeOrderWithItems(user, items, checkoutDTO);
 
         session.removeAttribute("CHECKOUT_ITEM_IDS");
-
         return "redirect:/order/list?success";
     }
 
@@ -173,6 +183,11 @@ public class OrderController {
         }
         model.addAttribute("order", order);
         return "order/order-detail";
+    }
+
+    @GetMapping("/my-wishlist")
+    public String wishlist() {
+        return "order/my-wishlist";
     }
 
 }

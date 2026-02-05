@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 public interface ProductService {
     List<Product> getAllActiveProducts();
 
+    Page<Product> getActiveProducts(Pageable pageable);
+
     Optional<Product> getProductById(Integer id);
 
     List<Product> searchProducts(String keyword);
