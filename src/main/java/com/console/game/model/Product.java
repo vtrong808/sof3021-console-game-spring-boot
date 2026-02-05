@@ -1,16 +1,21 @@
 package com.console.game.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
-@Table(name = "Products")
-@Data
+@Table(name = "products") // nên dùng chữ thường
+@Getter
+@Setter
 public class Product extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id")
     private Integer productId;
 
     @ManyToOne
@@ -21,15 +26,24 @@ public class Product extends BaseEntity {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @Column(name = "product_name")
     private String productName;
-    @Column(columnDefinition = "TEXT")
+
+    @Column(name = "product_description", columnDefinition = "TEXT")
     private String productDescription;
 
+    @Column(name = "price")
     private BigDecimal price;
-    private Integer stockQuantity;
-    private String thumbnailUrl;
-    private Boolean isActive = true;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @Column(name = "stock_quantity")
+    private Integer stockQuantity;
+
+    @Column(name = "thumbnail_url")
+    private String thumbnailUrl;
+
+    @Column(name = "is_active")
+    private Boolean isActive;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductImage> images;
 }

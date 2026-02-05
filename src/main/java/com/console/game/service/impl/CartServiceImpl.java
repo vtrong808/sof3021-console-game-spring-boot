@@ -32,7 +32,7 @@ public class CartServiceImpl implements CartService {
         // Tìm User theo email
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
-        
+
         // Tìm Product theo Id
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found with id: " + productId));
@@ -61,6 +61,19 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    public List<CartItem> getCartItemsByIds(List<Integer> ids, User user) {
+        return cartItemRepository.findByCartItemIdInAndUser(ids, user);
+    }
+
+    @Override
+    public BigDecimal getTotalAmount(List<CartItem> items) {
+        return items.stream()
+                .map(i -> i.getProduct().getPrice()
+                        .multiply(BigDecimal.valueOf(i.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
     public void updateQuantity(Integer cartItemId, Integer quantity) {
         CartItem item = cartItemRepository.findById(cartItemId).orElse(null);
         if (item != null && quantity > 0) {
@@ -84,7 +97,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public BigDecimal getTotalAmount(User user) {
         List<CartItem> items = getCartItems(user);
-        
+
         // Tính tổng tiền bằng BigDecimal để tránh lỗi làm tròn
         return items.stream()
                 .map(item -> {

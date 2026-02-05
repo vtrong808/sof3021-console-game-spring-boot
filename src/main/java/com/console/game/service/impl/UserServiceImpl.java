@@ -23,9 +23,7 @@ public class UserServiceImpl implements UserService {
     public User registerUser(User user) {
         // Mã hóa mật khẩu
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        // Mặc định Role là CUSTOMER
         user.setRole(Role.CUSTOMER);
-        // Mặc định Active
         user.setIsActive(true);
 
         return userRepository.save(user);
@@ -34,5 +32,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public long getTotalUsers(){
+        return userRepository.count();
     }
 }

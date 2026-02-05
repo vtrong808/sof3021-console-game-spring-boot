@@ -1,6 +1,5 @@
 package com.console.game.config;
 
-import com.console.game.service.impl.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,31 +29,56 @@ public class SecurityConfig {
     // Cấu hình Provider xác thực
     // @Bean
     // public DaoAuthenticationProvider authenticationProvider() {
-    //     DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-    //     authProvider.setUserDetailsService(userDetailsService);
-    //     authProvider.setPasswordEncoder(passwordEncoder());
-    //     return authProvider;
+    // DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+    // authProvider.setUserDetailsService(userDetailsService);
+    // authProvider.setPasswordEncoder(passwordEncoder());
+    // return authProvider;
     // }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Tắt CSRF để dễ test form
+                .csrf(csrf -> csrf.disable())
+
                 .authorizeHttpRequests(auth -> auth
-                        // Cho phép truy cập tự do các tài nguyên tĩnh và trang chủ/đăng nhập
-                        .requestMatchers("/", "/home/**", "/product/**", "/auth/**", "/account/**", "/css/**", "/js/**",
+
+                        // 1. PUBLIC – chưa đăng nhập vẫn vào được
+                        .requestMatchers(
+                                "/",
+                                "/home/**",
+                                "/product/**",
+                                "/products/**",
+                                "/shop/**",
+                                "/auth/**",
+                                "/css/**",
+                                "/js/**",
                                 "/images/**")
                         .permitAll()
-                        // Các request còn lại phải đăng nhập
+
+                        // 2. CUSTOMER – phải đăng nhập và có role CUSTOMER
+                        .requestMatchers(
+                                "/cart/**",
+                                "/checkout/**",
+                                "/order/**",
+                                "/account/**")
+                        .hasRole("CUSTOMER")
+
+                        // 3. ADMIN / STAFF
+                        .requestMatchers("/admin/**")
+                        .hasAnyRole("ADMIN", "STAFF")
+
+                        // 4. Bất kỳ request nào khác → cần đăng nhập
                         .anyRequest().authenticated())
+
                 .formLogin(form -> form
                         .loginPage("/auth/login")
                         .loginProcessingUrl("/auth/login")
-                        .usernameParameter("email") // Quan trọng: map với name="email" ở form HTML
+                        .usernameParameter("email")
                         .passwordParameter("password")
                         .defaultSuccessUrl("/", true)
                         .failureUrl("/auth/login?error=true")
                         .permitAll())
+
                 .logout(logout -> logout
                         .logoutUrl("/auth/logout")
                         .logoutSuccessUrl("/auth/login?logout=true")
@@ -62,4 +86,5 @@ public class SecurityConfig {
 
         return http.build();
     }
+
 }
