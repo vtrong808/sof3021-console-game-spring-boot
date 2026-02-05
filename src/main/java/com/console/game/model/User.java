@@ -3,35 +3,48 @@ package com.console.game.model;
 import com.console.game.enums.Role;
 import com.console.game.enums.Provider;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 @Data
-public class User extends BaseEntity {
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
 
+    @Column(nullable = false)
     private String fullName;
-    @Column(unique = true)
+
+    @Column(nullable = false, unique = true)
     private String email;
+
     private String password;
     private String phoneNumber;
+
+    @Enumerated(EnumType.STRING)
+    private Provider provider;
+
+    private String providerId;
     private String avatarUrl;
 
     @Enumerated(EnumType.STRING)
-    private Provider provider = Provider.LOCAL;
+    private Role role;
 
-    private String providerId;
+    private Boolean isActive;   // Đã xác thực email chưa
 
-    @Enumerated(EnumType.STRING)
-    private Role role = Role.CUSTOMER;
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
 
-    @Column(nullable = false)
-    private Boolean isActive = true;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Address> addresses;

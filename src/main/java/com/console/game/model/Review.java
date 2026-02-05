@@ -10,7 +10,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "Reviews")
+@Table(name = "reviews")
 @Data
 public class Review extends BaseEntity {
     @Id

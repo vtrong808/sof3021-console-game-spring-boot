@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "Brands")
+@Table(name = "brands")
 @Data
 public class Brand extends BaseEntity {
     @Id

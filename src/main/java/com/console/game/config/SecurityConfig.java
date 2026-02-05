@@ -1,6 +1,5 @@
 package com.console.game.config;
 
-import com.console.game.service.impl.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,8 +41,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Tắt CSRF để dễ test form
                 .authorizeHttpRequests(auth -> auth
                         // Cho phép truy cập tự do các tài nguyên tĩnh và trang chủ/đăng nhập
-                        .requestMatchers("/", "/home/**", "/product/**", "/auth/**", "/account/**", "/css/**", "/js/**",
-                                "/images/**")
+                        .requestMatchers("/", "/home/**", "/product/**", "/products/**", "/shop/**", "/auth/**", "/css/**", "/js/**", "/images/**")
                         .permitAll()
                         // Các request còn lại phải đăng nhập
                         .anyRequest().authenticated())

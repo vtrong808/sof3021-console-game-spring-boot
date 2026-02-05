@@ -29,17 +29,18 @@ public class CartController {
         }
         String email = principal.getName();
         User user = userService.findByEmail(email).orElse(null);
-        
+
         List<CartItem> cartItems = cartService.getCartItems(user);
         model.addAttribute("cartItems", cartItems);
         model.addAttribute("totalAmount", cartService.getTotalAmount(user));
         return "cart/cart";
     }
 
-    @GetMapping("/add/{productId}")
-    public String addToCart(@PathVariable("productId") Integer productId, 
-                            @RequestParam(value = "quantity", defaultValue = "1") Integer quantity,
-                            Principal principal) {
+    @PostMapping("/add")
+    public String addToCart(
+            @RequestParam("productId") Integer productId,
+            @RequestParam("quantity") Integer quantity,
+            Principal principal) {
         if (principal == null) {
             return "redirect:/auth/login";
         }
@@ -54,8 +55,8 @@ public class CartController {
     }
 
     @PostMapping("/update")
-    public String updateCart(@RequestParam("id") Integer cartItemId, 
-                             @RequestParam("quantity") Integer quantity) {
+    public String updateCart(@RequestParam("id") Integer cartItemId,
+            @RequestParam("quantity") Integer quantity) {
         cartService.updateQuantity(cartItemId, quantity);
         return "redirect:/cart/view";
     }
@@ -68,12 +69,12 @@ public class CartController {
     }
 
     @GetMapping("/update/{id}")
-    public String updateCartQuantity(@PathVariable("id") Integer cartItemId,
-                                     @RequestParam("qty") Integer quantity) {
-        // Gọi service để cập nhật số lượng
+    public String updateCartQuantity(
+            @PathVariable("id") Integer cartItemId,
+            @RequestParam("qty") Integer quantity) {
+
         cartService.updateQuantity(cartItemId, quantity);
-        
-        // Load lại trang giỏ hàng
         return "redirect:/cart/view";
     }
+
 }
