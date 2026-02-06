@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý sản phẩm</title>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link th:href="@{/css/admin.css}" rel="stylesheet" />
@@ -15,71 +14,65 @@
     <div th:replace="layout/sidebar :: sidebar"></div>
 
     <div class="flex-grow-1" id="page-content-wrapper">
-
         <nav class="navbar navbar-expand navbar-light bg-white shadow-sm sticky-top px-4">
             <div class="d-flex align-items-center gap-4 w-100">
                 <h4 class="fw-bold text-dark mb-0">Quản lý sản phẩm</h4>
             </div>
         </nav>
 
-
         <div class="p-4 p-lg-5">
-
             <div class="card border-0 shadow-sm mb-5">
                 <div class="card-body p-5">
-                    <h5 class="fw-bold mb-4">Thêm sản phẩm mới</h5>
+                    <h5 class="fw-bold mb-4" id="formTitle">Thêm sản phẩm mới</h5>
 
-                    <form class="row g-4">
-
+                    <form id="productForm" class="row g-4" onsubmit="saveProduct(event)">
+                        <input type="hidden" id="productId">
+                        
                         <div class="col-lg-4">
                             <label class="form-label fw-bold small">Ảnh sản phẩm</label>
-                            <div
-                                class="border border-success border-dashed rounded-4 p-5 text-center bg-light cursor-pointer">
-                                <i class="fas fa-cloud-upload-alt text-success fs-1 mb-3"></i>
-                                <p class="fw-bold mb-1">Nhấn để tải lên hoặc kéo thả</p>
-                                <input type="file" class="d-none" accept="image/*">
-                            </div>
+                            <div class="border border-success border-dashed rounded-4 p-3 text-center bg-light cursor-pointer position-relative">
+                                <img id="thumbnailPreview" src="" class="img-fluid rounded mb-2 d-none" style="max-height: 150px;">
+                                
+                                <div id="uploadPlaceholder">
+                                    <i class="fas fa-cloud-upload-alt text-success fs-1 mb-3"></i>
+                                    <p class="fw-bold mb-1">Nhấn để tải lên</p>
+                                </div>
+                                <input type="file" id="fileInput" class="position-absolute top-0 start-0 w-100 h-100 opacity-0 cursor-pointer" accept="image/*" onchange="uploadImage(this)">
+                                <input type="hidden" id="thumbnailUrl"> </div>
                         </div>
-
 
                         <div class="col-lg-8">
                             <div class="row g-4">
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold small">Tên sản phẩm</label>
-                                    <input type="text" class="form-control form-control-lg rounded-4" required>
+                                    <input type="text" id="productName" class="form-control form-control-lg rounded-4" required>
                                 </div>
 
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold small">Danh mục</label>
-                                    <select class="form-select form-select-lg rounded-4">
-                                        <option>Console</option>
-                                        <option>Handheld</option>
-                                        <option>Accessories</option>
-                                    </select>
+                                    <select id="categoryId" class="form-select form-select-lg rounded-4" required>
+                                        <option value="">-- Chọn danh mục --</option>
+                                        </select>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="form-label fw-bold small">Giá gốc (₫)</label>
-                                    <input type="number" class="form-control form-control-lg rounded-4" required>
+                                    <label class="form-label fw-bold small">Giá bán (VNĐ)</label>
+                                    <input type="number" id="price" class="form-control form-control-lg rounded-4" required>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="form-label fw-bold small">Giảm giá (%)</label>
-                                    <input type="number" class="form-control form-control-lg rounded-4" placeholder="0">
-                                </div>
-
-                                <div class="col-12">
                                     <label class="form-label fw-bold small">Tồn kho</label>
-                                    <input type="number" class="form-control form-control-lg rounded-4" required>
+                                    <input type="number" id="stock" class="form-control form-control-lg rounded-4" required>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <label class="form-label fw-bold small">Mô tả</label>
+                                    <textarea id="description" class="form-control rounded-4" rows="3"></textarea>
                                 </div>
 
                                 <div class="col-12 text-end">
-                                    <button type="reset" class="btn btn-outline-danger btn-lg px-4 me-3">
-                                        Hủy
-                                    </button>
-                                    <button type="submit" class="btn btn-success btn-lg px-4 fw-bold">
-                                        Thêm sản phẩm
-                                    </button>
+                                    <button type="button" onclick="resetForm()" class="btn btn-outline-danger btn-lg px-4 me-3">Hủy / Mới</button>
+                                    <button type="submit" class="btn btn-success btn-lg px-4 fw-bold">Lưu sản phẩm</button>
                                 </div>
                             </div>
                         </div>
@@ -89,23 +82,7 @@
 
             <div class="card border-0 shadow-sm">
                 <div class="card-body p-4">
-
-                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
-
-                        <h5 class="fw-bold mb-0 text-dark">
-                            Danh sách sản phẩm
-                        </h5>
-
-                        <div class="d-flex align-items-center gap-2">
-                            <select class="form-select rounded-pill" style="max-width:200px">
-                                <option>Tất cả danh mục</option>
-                                <option>Console</option>
-                                <option>Handheld</option>
-                            </select>
-
-                        </div>
-                    </div>
-
+                    <h5 class="fw-bold mb-3 text-dark">Danh sách sản phẩm</h5>
                     <div class="table-responsive">
                         <table class="table table-hover align-middle">
                             <thead class="table-light">
@@ -115,57 +92,181 @@
                                     <th>Danh mục</th>
                                     <th>Giá</th>
                                     <th>Tồn kho</th>
-                                    <th>Trạng thái</th>
-                                    <th class="text-end">Hành động</th>
+                                    <th>Hành động</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td><img src="" class="rounded"></td>
-                                    <td class="fw-bold"></td>
-                                    <td></td>
-                                    <td class="text-success fw-bold"></td>
-                                    <td></td>
-                                    <td><span class="badge bg-success rounded-pill px-3 py-2"></span></td>
-                                    <td class="text-end">
-                                        <button class="btn btn-sm btn-outline-primary me-2"><i
-                                                class="fas fa-edit"></i></button>
-                                        <button class="btn btn-sm btn-outline-danger"><i
-                                                class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
+                            <tbody id="productTableBody">
+                                </tbody>
                         </table>
                     </div>
-
-                    <nav aria-label="Phân trang danh mục" class="mt-5">
-                        <ul class="pagination pagination-sm justify-content-center">
-                            <li class="page-item">
-                                <a class="page-link rounded-circle me-2" href="#" aria-label="Trang trước">
-                                    <i class="fas fa-chevron-left"></i>
-                                </a>
-                            </li>
-                            <li class="page-item active"><a
-                                    class="page-link bg-success border-success text-white rounded-circle mx-1"
-                                    href="#">1</a></li>
-                            <li class="page-item"><a class="page-link rounded-circle mx-1" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link rounded-circle mx-1" href="#">3</a></li>
-                            <li class="page-item disabled"><span class="page-link mx-1">...</span></li>
-                            <li class="page-item"><a class="page-link rounded-circle mx-1" href="#">12</a></li>
-                            <li class="page-item">
-                                <a class="page-link rounded-circle ms-2" href="#" aria-label="Trang sau">
-                                    <i class="fas fa-chevron-right"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
                 </div>
             </div>
-
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
 
+    <script>
+        const API_PRODUCT = '/api/admin/products';
+        const API_CATEGORY = '/api/admin/categories';
+        const API_UPLOAD = '/api/admin/upload';
+
+        // 1. Chạy khi trang vừa load
+        document.addEventListener("DOMContentLoaded", () => {
+            loadCategories();
+            loadProducts();
+        });
+
+        // 2. Load danh mục vào Select
+        async function loadCategories() {
+            try {
+                const res = await fetch(API_CATEGORY);
+                const categories = await res.json();
+                const select = document.getElementById('categoryId');
+                categories.forEach(c => {
+                    const option = document.createElement('option');
+                    option.value = c.categoryId;
+                    option.text = c.categoryName;
+                    select.appendChild(option);
+                });
+            } catch (err) { console.error("Lỗi load category:", err); }
+        }
+
+        // 3. Load danh sách sản phẩm
+        async function loadProducts() {
+            try {
+                const res = await fetch(API_PRODUCT);
+                const products = await res.json();
+                const tbody = document.getElementById('productTableBody');
+                tbody.innerHTML = '';
+
+                products.forEach(p => {
+                    const row = `
+                        <tr>
+                            <td><img src="${p.thumbnailUrl || 'https://placehold.co/50'}" class="rounded" width="50" height="50" style="object-fit:cover"></td>
+                            <td class="fw-bold">${p.productName}</td>
+                            <td>${p.category ? p.category.categoryName : '---'}</td>
+                            <td class="text-success fw-bold">${formatCurrency(p.price)}</td>
+                            <td>${p.stockQuantity}</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary me-2" onclick="editProduct(${p.productId})"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-sm btn-outline-danger" onclick="deleteProduct(${p.productId})"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
+                });
+            } catch (err) { console.error("Lỗi load product:", err); }
+        }
+
+        // 4. Upload ảnh ngay khi chọn file
+        async function uploadImage(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const res = await fetch(API_UPLOAD, { method: 'POST', body: formData });
+                if (res.ok) {
+                    const data = await res.json();
+                    // Lưu đường dẫn ảnh vào thẻ hidden
+                    document.getElementById('thumbnailUrl').value = data.url;
+                    // Hiển thị ảnh xem trước
+                    document.getElementById('thumbnailPreview').src = data.url;
+                    document.getElementById('thumbnailPreview').classList.remove('d-none');
+                    document.getElementById('uploadPlaceholder').classList.add('d-none');
+                } else {
+                    alert('Upload ảnh thất bại');
+                }
+            } catch (err) { console.error(err); }
+        }
+
+        // 5. Lưu sản phẩm (Thêm mới hoặc Cập nhật)
+        async function saveProduct(e) {
+            e.preventDefault();
+
+            const id = document.getElementById('productId').value;
+            const method = id ? 'PUT' : 'POST';
+            const url = id ? `${API_PRODUCT}/${id}` : API_PRODUCT;
+
+            const productData = {
+                productName: document.getElementById('productName').value,
+                categoryId: document.getElementById('categoryId').value,
+                price: document.getElementById('price').value,
+                stockQuantity: document.getElementById('stock').value,
+                productDescription: document.getElementById('description').value,
+                thumbnailUrl: document.getElementById('thumbnailUrl').value,
+                isActive: true
+            };
+
+            try {
+                const res = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(productData)
+                });
+
+                if (res.ok) {
+                    alert('Lưu thành công!');
+                    resetForm();
+                    loadProducts();
+                } else {
+                    alert('Có lỗi xảy ra!');
+                }
+            } catch (err) { console.error(err); }
+        }
+
+        // 6. Đổ dữ liệu lên form để sửa
+        async function editProduct(id) {
+            try {
+                const res = await fetch(`${API_PRODUCT}/${id}`);
+                const p = await res.json();
+
+                document.getElementById('productId').value = p.productId;
+                document.getElementById('productName').value = p.productName;
+                document.getElementById('categoryId').value = p.category ? p.category.categoryId : '';
+                document.getElementById('price').value = p.price;
+                document.getElementById('stock').value = p.stockQuantity;
+                document.getElementById('description').value = p.productDescription;
+                document.getElementById('thumbnailUrl').value = p.thumbnailUrl;
+
+                if (p.thumbnailUrl) {
+                    document.getElementById('thumbnailPreview').src = p.thumbnailUrl;
+                    document.getElementById('thumbnailPreview').classList.remove('d-none');
+                    document.getElementById('uploadPlaceholder').classList.add('d-none');
+                }
+
+                document.getElementById('formTitle').innerText = "Cập nhật sản phẩm";
+                window.scrollTo(0, 0); // Cuộn lên đầu trang
+            } catch (err) { console.error(err); }
+        }
+
+        // 7. Xóa sản phẩm
+        async function deleteProduct(id) {
+            if (!confirm('Bạn có chắc muốn xóa sản phẩm này?')) return;
+            try {
+                const res = await fetch(`${API_PRODUCT}/${id}`, { method: 'DELETE' });
+                if (res.ok) loadProducts();
+                else alert('Không thể xóa!');
+            } catch (err) { console.error(err); }
+        }
+
+        // 8. Reset form
+        function resetForm() {
+            document.getElementById('productForm').reset();
+            document.getElementById('productId').value = '';
+            document.getElementById('thumbnailUrl').value = '';
+            document.getElementById('thumbnailPreview').classList.add('d-none');
+            document.getElementById('uploadPlaceholder').classList.remove('d-none');
+            document.getElementById('formTitle').innerText = "Thêm sản phẩm mới";
+        }
+
+        // Helper: Format tiền tệ
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+        }
+    </script>
+</body>
 </html>

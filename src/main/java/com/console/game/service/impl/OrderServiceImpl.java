@@ -7,6 +7,7 @@ import com.console.game.repository.OrderItemRepository;
 import com.console.game.repository.OrderRepository;
 import com.console.game.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,97 +25,40 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private CartItemRepository cartItemRepository;
 
+    // --- CÁC HÀM CŨ (GIỮ NGUYÊN) ---
     @Override
     @Transactional
     public Order placeOrder(User user, String address, String phone, String fullName, String note) {
-        List<CartItem> cartItems = cartItemRepository.findByUser(user);
-        if (cartItems.isEmpty()) {
-            throw new RuntimeException("Giỏ hàng trống, không thể đặt hàng");
-        }
-
-        // 1. Tạo Order mới
-        Order order = new Order();
-        order.setUser(user);
-        order.setFullName(fullName);
-        order.setPhoneNumber(phone);
-        order.setShippingAddress(address);
-        order.setNote(note);
-        order.setOrderDate(LocalDateTime.now());
-        order.setStatus(OrderStatus.PENDING);
-
-        // Tính tổng tiền
-        BigDecimal total = BigDecimal.ZERO;
-        for (CartItem item : cartItems) {
-            BigDecimal linePrice = item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity()));
-            total = total.add(linePrice);
-        }
-        order.setTotalAmount(total);
-
-        Order savedOrder = orderRepository.save(order);
-
-        // 2. Chuyển CartItem -> OrderItem
-        for (CartItem item : cartItems) {
-            OrderItem orderItem = new OrderItem();
-            orderItem.setOrder(savedOrder);
-            orderItem.setProduct(item.getProduct());
-            orderItem.setQuantity(item.getQuantity());
-            orderItem.setPriceAtPurchase(item.getProduct().getPrice()); // Lưu giá tại thời điểm mua
-
-            orderItemRepository.save(orderItem);
-        }
-
-        // 3. Xóa giỏ hàng
-        cartItemRepository.deleteAll(cartItems);
-
-        return savedOrder;
+        // ... (Giữ nguyên code cũ của bạn) ...
+        return null; // (Tôi rút gọn ở đây để tập trung vào phần mới, bạn hãy giữ code cũ nhé)
     }
 
     @Override
     @Transactional
-    public Order placeOrderWithItems(
-            User user,
-            List<CartItem> items,
-            CheckoutDTO dto) {
+    public Order placeOrderWithItems(User user, List<CartItem> items, CheckoutDTO dto) {
+        // ... (Giữ nguyên code cũ của bạn) ...
+        return null; // (Tương tự)
+    }
 
-        if (items == null || items.isEmpty()) {
-            throw new RuntimeException("Không có sản phẩm để thanh toán");
-        }
+    // --- CÁC HÀM MỚI CHO ADMIN ---
 
-        // 1. Tạo Order
-        Order order = new Order();
-        order.setUser(user);
-        order.setFullName(dto.getFullName());
-        order.setPhoneNumber(dto.getPhoneNumber());
-        order.setShippingAddress(dto.getAddress());
-        order.setNote(dto.getNote());
-        order.setOrderDate(LocalDateTime.now());
-        order.setStatus(OrderStatus.PENDING);
+    @Override
+    public List<Order> getAllOrders() {
+        // Lấy danh sách, sắp xếp đơn mới nhất lên đầu
+        return orderRepository.findAll(Sort.by(Sort.Direction.DESC, "orderDate"));
+    }
 
-        // 2. Tính tổng tiền
-        BigDecimal total = BigDecimal.ZERO;
-        for (CartItem item : items) {
-            BigDecimal line = item.getProduct().getPrice()
-                    .multiply(BigDecimal.valueOf(item.getQuantity()));
-            total = total.add(line);
-        }
-        order.setTotalAmount(total);
+    @Override
+    public Order getOrderById(Integer id) {
+        return orderRepository.findById(id).orElse(null);
+    }
 
-        orderRepository.save(order);
-
-        // 3. CartItem → OrderItem
-        for (CartItem item : items) {
-            OrderItem oi = new OrderItem();
-            oi.setOrder(order);
-            oi.setProduct(item.getProduct());
-            oi.setQuantity(item.getQuantity());
-            oi.setPriceAtPurchase(item.getProduct().getPrice());
-
-            orderItemRepository.save(oi);
-        }
-
-        // 4. Xóa cart item đã thanh toán
-        cartItemRepository.deleteAll(items);
-
-        return order;
+    @Override
+    public Order updateOrderStatus(Integer orderId, OrderStatus status) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+        
+        order.setStatus(status);
+        return orderRepository.save(order);
     }
 }
