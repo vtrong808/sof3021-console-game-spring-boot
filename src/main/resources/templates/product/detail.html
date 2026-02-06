@@ -23,15 +23,17 @@
     <div class="row g-5 align-items-start">
       <div class="col-lg-6">
         <div class="card border-0 shadow rounded-4 overflow-hidden mb-4">
-          <img th:src="@{${p.thumbnailUrl}}" class="img-fluid product-image w-100" alt="Ảnh sản phẩm">
+          <img th:src="@{/images/{img}(img=${p.thumbnailUrl})}" class="img-fluid product-image w-100"
+            alt="Ảnh sản phẩm">
         </div>
 
         <div class="row g-3 thumb">
           <div class="col-3">
-            <img th:src="@{${p.thumbnailUrl}}" class="img-fluid rounded-3 border border-primary" alt="Thumb">
+            <img th:src="@{/images/{img}(img=${p.thumbnailUrl})}" class="img-fluid rounded-3 border border-primary"
+              alt="Thumb">
           </div>
           <div class="col-3">
-            <img th:src="@{${p.thumbnailUrl}}" class="img-fluid rounded-3 opacity-75" alt="Thumb">
+            <img th:src="@{/images/{img}(img=${p.thumbnailUrl})}" class="img-fluid rounded-3 opacity-75" alt="Thumb">
           </div>
         </div>
       </div>

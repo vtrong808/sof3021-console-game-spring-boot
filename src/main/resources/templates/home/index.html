@@ -81,7 +81,7 @@
               <span class="position-absolute top-0 start-0 badge bg-info text-white m-3">
                 Hot
               </span>
-              <img th:src="${p.thumbnailUrl}" class="card-img-top" alt="Sản phẩm"
+              <img th:src="@{/images/{img}(img=${p.thumbnailUrl})}" class="card-img-top" alt="Sản phẩm"
                 style="height: 200px; object-fit: cover;">
             </div>
 
