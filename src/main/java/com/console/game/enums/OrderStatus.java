@@ -7,6 +7,7 @@ public enum OrderStatus {
     SHIPPING("Đang giao hàng"),
     DELIVERED("Đã giao"),
     CANCELLED("Đã hủy"),
+    COMPLETED("Đã giao thành công"),
     RETURNED("Hoàn trả");
 
     private final String label;

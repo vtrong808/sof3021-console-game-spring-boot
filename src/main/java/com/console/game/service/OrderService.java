@@ -8,18 +8,29 @@ import com.console.game.model.User;
 import java.util.List;
 
 public interface OrderService {
-    // --- KHÁCH HÀNG ---
+
+    // --- KHÁCH HÀNG (CUSTOMER) ---
+
+    // Đặt hàng từ giỏ hàng hiện tại
     Order placeOrder(User user, String address, String phone, String fullName, String note);
 
+    // Đặt hàng với danh sách sản phẩm cụ thể và thông tin checkout
     Order placeOrderWithItems(User user, List<CartItem> items, CheckoutDTO checkoutDTO);
 
-    // --- ADMIN ---
+    // Người dùng yêu cầu hủy đơn hàng
+    void cancelOrder(Integer orderId, User user);
+
+    // --- QUẢN TRỊ (ADMIN) ---
+
+    // Lấy danh sách tất cả đơn hàng trong hệ thống
     List<Order> getAllOrders();
 
+    // Tìm chi tiết một đơn hàng theo ID
     Order getOrderById(Integer id);
 
+    // Cập nhật trạng thái đơn hàng (Ví dụ: Chờ xử lý -> Đang giao)
     Order updateOrderStatus(Integer orderId, OrderStatus status);
 
-    // --- Hủy đơn hàng ---
-    void cancelOrder(Integer orderId, User user);
+    // Xóa hoàn toàn đơn hàng khỏi hệ thống
+    void deleteOrder(Integer orderId);
 }

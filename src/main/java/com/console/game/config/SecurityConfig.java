@@ -37,11 +37,11 @@ public class SecurityConfig {
                                                 "/product/**",
                                                 "/products/**",
                                                 "/account/sign-up",
-                                                "/account/forgot-password",
                                                 "/shop/**",
                                                 "/auth/**",
                                                 "/css/**",
                                                 "/js/**",
+                                                "/utils/**",
                                                 "/images/**",
                                                 "/oauth2/**")
                                 .permitAll()
@@ -66,7 +66,17 @@ public class SecurityConfig {
                                 .loginProcessingUrl("/auth/login")
                                 .usernameParameter("email")
                                 .passwordParameter("password")
-                                .defaultSuccessUrl("/", true)
+                                // Bỏ dòng defaultSuccessUrl và thay bằng successHandler
+                                .successHandler((request, response, authentication) -> {
+                                        boolean isAdmin = authentication.getAuthorities().stream()
+                                                        .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+                                        if (isAdmin) {
+                                                response.sendRedirect("/admin/dashboard"); // Nhảy thẳng vào Admin
+                                        } else {
+                                                response.sendRedirect("/"); // Khách hàng nhảy vào trang chủ
+                                        }
+                                })
                                 .failureUrl("/auth/login?error=true")
                                 .permitAll());
 
