@@ -61,14 +61,24 @@ public class SecurityConfig {
 
         // LOGIN LOCAL
         http.formLogin(form -> form
-                .loginPage("/auth/login")
-                .loginProcessingUrl("/auth/login")
-                .usernameParameter("email")
-                .passwordParameter("password")
-                .defaultSuccessUrl("/", true)
-                .failureUrl("/auth/login?error=true")
-                .permitAll()
-        );
+        .loginPage("/auth/login")
+        .loginProcessingUrl("/auth/login")
+        .usernameParameter("email")
+        .passwordParameter("password")
+        // Bỏ dòng defaultSuccessUrl và thay bằng successHandler
+        .successHandler((request, response, authentication) -> {
+            boolean isAdmin = authentication.getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+            
+            if (isAdmin) {
+                response.sendRedirect("/admin/dashboard"); // Nhảy thẳng vào Admin
+            } else {
+                response.sendRedirect("/"); // Khách hàng nhảy vào trang chủ
+            }
+        })
+        .failureUrl("/auth/login?error=true")
+        .permitAll()
+);
 
         // LOGIN GOOGLE
         http.oauth2Login(oauth -> oauth
