@@ -146,7 +146,17 @@ public class OrderController {
         }
         List<CartItem> items = cartService.getCartItemsByIds(ids, user);
 
+        // Tạo đơn hàng
         Order order = orderService.placeOrderWithItems(user, items, checkoutDTO);
+
+        // xoá sp khỏi giỏ hàng sau khi đặt hàng thành công
+        if (ids != null) {
+            for (Integer id : ids) {
+                cartService.removeFromCart(id);
+                System.out.println("Đã xóa CartItem ID: " + id); // In ra log để kiểm tra
+            }
+        }
+        // -----------------------------------------------------------------------------------
 
         session.removeAttribute("CHECKOUT_ITEM_IDS");
         return "redirect:/order/list?success";

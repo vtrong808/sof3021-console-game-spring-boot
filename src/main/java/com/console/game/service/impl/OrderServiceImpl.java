@@ -1,6 +1,7 @@
 package com.console.game.service.impl;
 
 import com.console.game.enums.OrderStatus;
+import com.console.game.enums.PaymentStatus;
 import com.console.game.model.*;
 import com.console.game.repository.CartItemRepository;
 import com.console.game.repository.OrderItemRepository;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,26 +27,69 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private CartItemRepository cartItemRepository;
 
-    // --- CÁC HÀM CŨ (GIỮ NGUYÊN) ---
+    // Hàm cũ (Giữ lại để tránh lỗi nếu code cũ còn gọi)
     @Override
     @Transactional
     public Order placeOrder(User user, String address, String phone, String fullName, String note) {
-        // ... (Giữ nguyên code cũ của bạn) ...
-        return null; // (Tôi rút gọn ở đây để tập trung vào phần mới, bạn hãy giữ code cũ nhé)
+        return null;
     }
 
+    // --- HÀM CHÍNH: Đặt hàng và Xóa giỏ hàng ---
     @Override
     @Transactional
     public Order placeOrderWithItems(User user, List<CartItem> items, CheckoutDTO dto) {
-        // ... (Giữ nguyên code cũ của bạn) ...
-        return null; // (Tương tự)
+        // 1. Khởi tạo đơn hàng (Order) từ thông tin CheckoutDTO
+        Order order = new Order();
+        order.setUser(user);
+        order.setFullName(dto.getFullName());
+        order.setPhoneNumber(dto.getPhoneNumber());
+        order.setShippingAddress(dto.getAddress());
+        order.setNote(dto.getNote());
+        order.setPaymentMethod(dto.getPaymentMethod());
+
+        // Cài đặt các trạng thái mặc định
+        order.setOrderDate(LocalDateTime.now());
+        order.setStatus(OrderStatus.PENDING); // Chờ xử lý
+        order.setPaymentStatus(PaymentStatus.UNPAID); // Chưa thanh toán
+
+        // 2. Tính tổng tiền đơn hàng
+        BigDecimal totalAmount = BigDecimal.ZERO;
+        for (CartItem item : items) {
+            BigDecimal itemTotal = item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity()));
+            totalAmount = totalAmount.add(itemTotal);
+        }
+        order.setTotalAmount(totalAmount);
+
+        // 3. Lưu Order xuống database để lấy ID
+        Order savedOrder = orderRepository.save(order);
+
+        // 4. Tạo chi tiết đơn hàng (Order Items)
+        List<OrderItem> orderItems = new ArrayList<>();
+        for (CartItem cartItem : items) {
+            OrderItem orderItem = new OrderItem();
+            orderItem.setOrder(savedOrder);
+            orderItem.setProduct(cartItem.getProduct());
+            orderItem.setQuantity(cartItem.getQuantity());
+            orderItem.setPriceAtPurchase(cartItem.getProduct().getPrice()); // Lưu giá tại thời điểm mua (Price
+                                                                            // Freezing)
+
+            orderItems.add(orderItem);
+        }
+        // Lưu danh sách Order Items
+        orderItemRepository.saveAll(orderItems);
+
+        // --- QUAN TRỌNG: XÓA CÁC SẢN PHẨM ĐÃ MUA KHỎI GIỎ HÀNG ---
+        cartItemRepository.deleteAll(items);
+        // ---------------------------------------------------------
+
+        return savedOrder;
     }
 
-    // --- CÁC HÀM MỚI CHO ADMIN ---
+    // --- CÁC HÀM QUẢN LÝ (ADMIN) ---
 
     @Override
     public List<Order> getAllOrders() {
-        // Lấy danh sách, sắp xếp đơn mới nhất lên đầu
+        // Lấy tất cả đơn hàng, sắp xếp mới nhất lên đầu
         return orderRepository.findAll(Sort.by(Sort.Direction.DESC, "orderDate"));
     }
 
@@ -57,8 +102,15 @@ public class OrderServiceImpl implements OrderService {
     public Order updateOrderStatus(Integer orderId, OrderStatus status) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
-        
+
         order.setStatus(status);
+
+        // Nếu chuyển sang trạng thái đã giao (DELIVERED) thì cập nhật luôn là đã thanh
+        // toán (PAID)
+        if (status == OrderStatus.DELIVERED) {
+            order.setPaymentStatus(PaymentStatus.PAID);
+        }
+
         return orderRepository.save(order);
     }
 }
