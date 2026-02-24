@@ -94,6 +94,8 @@ public class ProductServiceImpl implements ProductService {
         product.setProductDescription(dto.getProductDescription());
         product.setIsActive(dto.getIsActive() != null ? dto.getIsActive() : true);
 
+        product.setThumbnailUrl(dto.getThumbnailUrl());
+
         // Set quan hệ
         if (dto.getCategoryId() != null) {
             product.setCategory(categoryRepository.findById(dto.getCategoryId()).orElse(null));
