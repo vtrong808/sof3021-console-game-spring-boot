@@ -27,10 +27,13 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private CartItemRepository cartItemRepository;
 
-    // Hàm cũ (Giữ lại để tránh lỗi nếu code cũ còn gọi)
+    // --- KHÁCH HÀNG ---
+
     @Override
     @Transactional
     public Order placeOrder(User user, String address, String phone, String fullName, String note) {
+        // Giữ lại để tránh lỗi nếu code cũ còn gọi, bạn có thể triển khai logic tương
+        // tự placeOrderWithItems nếu cần
         return null;
     }
 
@@ -38,7 +41,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public Order placeOrderWithItems(User user, List<CartItem> items, CheckoutDTO dto) {
-        // 1. Khởi tạo đơn hàng (Order) từ thông tin CheckoutDTO
+        // 1. Khởi tạo đơn hàng
         Order order = new Order();
         order.setUser(user);
         order.setFullName(dto.getFullName());
@@ -47,12 +50,16 @@ public class OrderServiceImpl implements OrderService {
         order.setNote(dto.getNote());
         order.setPaymentMethod(dto.getPaymentMethod());
 
-        // Cài đặt các trạng thái mặc định
-        order.setOrderDate(LocalDateTime.now());
-        order.setStatus(OrderStatus.PENDING); // Chờ xử lý
-        order.setPaymentStatus(PaymentStatus.UNPAID); // Chưa thanh toán
+        // Tự động sinh mã vận đơn (Tracking Number)
+        String trackingNumber = "ORD" + System.currentTimeMillis();
+        order.setTrackingNumber(trackingNumber);
 
-        // 2. Tính tổng tiền đơn hàng
+        // Trạng thái mặc định
+        order.setOrderDate(LocalDateTime.now());
+        order.setStatus(OrderStatus.PENDING);
+        order.setPaymentStatus(PaymentStatus.UNPAID);
+
+        // 2. Tính tổng tiền
         BigDecimal totalAmount = BigDecimal.ZERO;
         for (CartItem item : items) {
             BigDecimal itemTotal = item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity()));
@@ -60,7 +67,7 @@ public class OrderServiceImpl implements OrderService {
         }
         order.setTotalAmount(totalAmount);
 
-        // 3. Lưu Order xuống database để lấy ID
+        // 3. Lưu Order
         Order savedOrder = orderRepository.save(order);
 
         // 4. Tạo chi tiết đơn hàng (Order Items)
@@ -70,26 +77,42 @@ public class OrderServiceImpl implements OrderService {
             orderItem.setOrder(savedOrder);
             orderItem.setProduct(cartItem.getProduct());
             orderItem.setQuantity(cartItem.getQuantity());
-            orderItem.setPriceAtPurchase(cartItem.getProduct().getPrice()); // Lưu giá tại thời điểm mua (Price
-                                                                            // Freezing)
-
+            // Lưu giá tại thời điểm mua (Price Freezing)
+            orderItem.setPriceAtPurchase(cartItem.getProduct().getPrice());
             orderItems.add(orderItem);
         }
-        // Lưu danh sách Order Items
         orderItemRepository.saveAll(orderItems);
 
-        // --- QUAN TRỌNG: XÓA CÁC SẢN PHẨM ĐÃ MUA KHỎI GIỎ HÀNG ---
+        // 5. Xóa sản phẩm khỏi giỏ hàng
         cartItemRepository.deleteAll(items);
-        // ---------------------------------------------------------
 
         return savedOrder;
     }
 
-    // --- CÁC HÀM QUẢN LÝ (ADMIN) ---
+    @Override
+    @Transactional
+    public void cancelOrder(Integer orderId, User user) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy đơn hàng"));
+
+        // Bảo mật: Kiểm tra quyền sở hữu
+        if (!order.getUser().getUserId().equals(user.getUserId())) {
+            throw new RuntimeException("Bạn không có quyền hủy đơn hàng này");
+        }
+
+        // Chỉ cho phép hủy khi đang chờ xử lý (PENDING) hoặc đã xác nhận (CONFIRMED)
+        if (order.getStatus() == OrderStatus.PENDING || order.getStatus() == OrderStatus.CONFIRMED) {
+            order.setStatus(OrderStatus.CANCELLED);
+            orderRepository.save(order);
+        } else {
+            throw new RuntimeException("Không thể hủy đơn hàng do đơn đã được vận chuyển hoặc hoàn thành");
+        }
+    }
+
+    // --- QUẢN TRỊ (ADMIN) ---
 
     @Override
     public List<Order> getAllOrders() {
-        // Lấy tất cả đơn hàng, sắp xếp mới nhất lên đầu
         return orderRepository.findAll(Sort.by(Sort.Direction.DESC, "orderDate"));
     }
 
@@ -99,15 +122,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public Order updateOrderStatus(Integer orderId, OrderStatus status) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
 
         order.setStatus(status);
 
-        // Nếu chuyển sang trạng thái đã giao (DELIVERED) thì cập nhật luôn là đã thanh
-        // toán (PAID)
-        if (status == OrderStatus.DELIVERED) {
+        // Tự động cập nhật trạng thái thanh toán nếu đã giao hàng thành công
+        if (status == OrderStatus.DELIVERED || status == OrderStatus.COMPLETED) {
             order.setPaymentStatus(PaymentStatus.PAID);
         }
 
@@ -117,18 +140,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public void deleteOrder(Integer orderId) {
-        // 1. Tìm đơn hàng
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy đơn hàng"));
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy đơn hàng để xóa"));
 
-        // 2. Xóa các chi tiết đơn hàng (OrderItem) trước để không bị lỗi khóa ngoại
-        // (Nếu bạn đã cài cascade = CascadeType.ALL trong entity thì có thể bỏ qua bước
-        // 2 này)
-        if (order.getOrderItems() != null && !order.getOrderItems().isEmpty()) {
+        // Xóa chi tiết trước để tránh lỗi ràng buộc khóa ngoại
+        if (order.getOrderItems() != null) {
             orderItemRepository.deleteAll(order.getOrderItems());
         }
 
-        // 3. Cuối cùng mới xóa đơn hàng
         orderRepository.delete(order);
     }
 }
