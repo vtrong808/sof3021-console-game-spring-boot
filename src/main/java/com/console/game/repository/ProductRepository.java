@@ -25,6 +25,15 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
        @Query("SELECT p FROM Product p WHERE p.isActive = true AND p.productName LIKE %:keyword%")
        List<Product> searchProducts(@Param("keyword") String keyword);
 
+       // Sản phẩm khuyến mãi (có giảm giá)
+       List<Product> findByIsActiveTrueAndDiscountPercentGreaterThan(Integer percent);
+
+       // Sản phẩm hot
+       List<Product> findByIsActiveTrueAndIsHotTrue();
+
+       // Phân trang
+       Page<Product> findByIsActiveTrueAndDiscountPercentGreaterThan(Integer percent, Pageable pageable);
+
        // Tìm kiếm theo Category ID
        // Lưu ý: Trong Product entity, tên field là 'category', nên Spring Data sẽ hiểu
        // là category.categoryId

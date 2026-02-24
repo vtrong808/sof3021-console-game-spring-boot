@@ -148,6 +148,39 @@
           </a>
         </div>
       </div>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+        <div class="col" th:each="p : ${hotProducts}">
+          <div class="card h-100 border-danger">
+
+            <div class="product-img position-relative">
+              <span class="position-absolute top-0 start-0 badge bg-danger text-white m-3">
+                -<span th:text="${p.discountPercent}"></span>%
+              </span>
+
+              <img th:src="@{/images/{img}(img=${p.thumbnailUrl})}" class="card-img-top"
+                style="height:200px;object-fit:cover;">
+            </div>
+
+            <div class="card-body">
+              <h5 class="fw-bold" th:text="${p.productName}"></h5>
+
+              <div>
+                <span class="text-decoration-line-through text-muted"
+                  th:text="${#numbers.formatDecimal(p.price,0,'COMMA',0,'POINT')} + ' đ'">
+                </span>
+
+                <span class="fs-5 fw-bold text-danger"
+                  th:text="${#numbers.formatDecimal(p.price * (100 - p.discountPercent) / 100,0,'COMMA',0,'POINT')} + ' đ'">
+                </span>
+              </div>
+
+              <a th:href="@{/product/detail/{id}(id=${p.productId})}" class="btn btn-danger w-100 mt-3">
+                Xem chi tiết
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
   </main>
