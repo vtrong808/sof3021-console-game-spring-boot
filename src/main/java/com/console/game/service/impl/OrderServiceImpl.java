@@ -37,6 +37,7 @@ public class OrderServiceImpl implements OrderService {
         return null;
     }
 
+    // --- HÀM CHÍNH: Đặt hàng và Xóa giỏ hàng ---
     @Override
     @Transactional
     public Order placeOrderWithItems(User user, List<CartItem> items, CheckoutDTO dto) {

@@ -41,6 +41,14 @@ public class Product extends BaseEntity {
     @Column(name = "thumbnail_url")
     private String thumbnailUrl;
 
+    // Các trường bổ sung ---------------------------------
+    @Column(name = "discount_percent")  // Mức giảm giá (nếu có)
+    private Integer discountPercent;
+
+    @Column(name = "is_hot")    // Sản phẩm hot (nổi bật) hay không, có thể dùng để hiển thị đặc biệt trên trang chủ
+    private Boolean isHot;
+    // ---------------------------------------------------
+
     @Column(name = "is_active")
     private Boolean isActive;
 

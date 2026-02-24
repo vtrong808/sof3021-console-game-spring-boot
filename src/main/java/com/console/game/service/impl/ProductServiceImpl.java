@@ -42,6 +42,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getHotProducts() {
+        return productRepository.findByIsActiveTrueAndDiscountPercentGreaterThan(0);    //  Giả sử sản phẩm có giảm giá sẽ được coi là hot
+    }
+
+    @Override
+    public Page<Product> getHotProducts(Pageable pageable) {
+        return productRepository.findByIsActiveTrueAndDiscountPercentGreaterThan(0, pageable);  //  Giả sử sản phẩm có giảm giá sẽ được coi là hot
+    }
+
+    @Override
     public List<Product> searchProducts(String keyword) {
         return productRepository.searchProducts(keyword);
     }
@@ -93,6 +103,8 @@ public class ProductServiceImpl implements ProductService {
         product.setStockQuantity(dto.getStockQuantity());
         product.setProductDescription(dto.getProductDescription());
         product.setIsActive(dto.getIsActive() != null ? dto.getIsActive() : true);
+
+        product.setThumbnailUrl(dto.getThumbnailUrl());
 
         // Set quan hệ
         if (dto.getCategoryId() != null) {

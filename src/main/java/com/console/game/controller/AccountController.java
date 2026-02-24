@@ -64,41 +64,70 @@ public class AccountController {
 
     // 2. XỬ LÝ CẬP NHẬT HỒ SƠ
     @PostMapping("/update-profile")
-    public String updateProfile(@RequestParam("fullName") String fullName,
-            @RequestParam("phoneNumber") String phoneNumber,
-            @RequestParam("address") String addressStr, // Nhận chuỗi địa chỉ từ form
+    public String updateProfile(
+            @RequestParam String fullName,
+            @RequestParam String phoneNumber,
+            @RequestParam(required = false) Integer addressId,
             Principal principal) {
+
         if (principal == null)
             return "redirect:/auth/login";
 
-        // 1. Cập nhật bảng User (Tên, SĐT)
         User currentUser = userService.findByEmail(principal.getName()).orElseThrow();
+
+        // Update user
         currentUser.setFullName(fullName);
         currentUser.setPhoneNumber(phoneNumber);
         userRepository.save(currentUser);
 
-        // 2. Cập nhật bảng Address (Địa chỉ)
-        List<Address> addresses = addressRepository.findByUser(currentUser);
-        Address userAddress;
+        // Set địa chỉ mặc định
+        if (addressId != null) {
+            List<Address> addresses = addressRepository.findByUser(currentUser);
 
-        if (addresses.isEmpty()) {
-            // Nếu chưa có địa chỉ nào -> Tạo mới
-            userAddress = new Address();
-            userAddress.setUser(currentUser);
-            userAddress.setIsDefault(true);
-        } else {
-            // Nếu có rồi -> Lấy cái đầu tiên để sửa
-            userAddress = addresses.get(0);
+            for (Address addr : addresses) {
+                addr.setIsDefault(addr.getAddressId().equals(addressId));
+                addressRepository.save(addr);
+            }
         }
 
-        // Set thông tin vào bảng Address
-        userAddress.setAddressLine(addressStr);
-        userAddress.setRecipientName(fullName); // Tên người nhận mặc định là tên user
-        userAddress.setPhoneNumber(phoneNumber); // SĐT người nhận mặc định là SĐT user
-
-        addressRepository.save(userAddress); // Lưu bảng Address
-
         return "redirect:/account/edit-profile?success";
+    }
+
+    @PostMapping("/add-address")
+    public String addAddress(
+            @RequestParam String fullName,
+            @RequestParam String phone,
+            @RequestParam String addressLine,
+            @RequestParam String district,
+            @RequestParam String city,
+            @RequestParam(required = false) Boolean isDefault,
+            Principal principal) {
+
+        if (principal == null)
+            return "redirect:/auth/login";
+
+        User user = userService.findByEmail(principal.getName()).orElseThrow();
+
+        Address address = new Address();
+        address.setUser(user);
+        address.setRecipientName(fullName);
+        address.setPhoneNumber(phone);
+        address.setAddressLine(addressLine);
+        address.setDistrict(district);
+        address.setCity(city);
+        address.setIsDefault(isDefault != null && isDefault);
+
+        // Nếu set mặc định → bỏ mặc định cũ
+        if (address.getIsDefault()) {
+            List<Address> addresses = addressRepository.findByUser(user);
+            for (Address addr : addresses) {
+                addr.setIsDefault(false);
+                addressRepository.save(addr);
+            }
+        }
+        
+        addressRepository.save(address);
+        return "redirect:/account/edit-profile?address_added";
     }
 
     @GetMapping("/forgot-password")

@@ -16,27 +16,23 @@ import java.util.UUID;
 public class UploadApiAdminController {
 
     // Thư mục lưu ảnh (nằm ngoài thư mục code để tránh mất khi rebuild)
-    private final String UPLOAD_DIR = "uploads/";
+    private final String UPLOAD_DIR = "src/main/resources/static/images/";
 
     @PostMapping
     public ResponseEntity<Map<String, String>> uploadFile(@RequestParam("file") MultipartFile file) {
         Map<String, String> response = new HashMap<>();
         try {
-            // Tạo thư mục nếu chưa có
             Path uploadPath = Paths.get(UPLOAD_DIR);
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
 
-            // Tạo tên file ngẫu nhiên để tránh trùng
             String fileName = UUID.randomUUID().toString() + "-" + StringUtils.cleanPath(file.getOriginalFilename());
             
-            // Lưu file
             Path filePath = uploadPath.resolve(fileName);
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-            // Trả về URL (chúng ta sẽ cấu hình để truy cập qua /uploads/...)
-            response.put("url", "/uploads/" + fileName);
+            
+            response.put("url", fileName);
             return ResponseEntity.ok(response);
 
         } catch (IOException e) {
