@@ -20,13 +20,17 @@ public interface ProductService {
     List<Product> searchProducts(String keyword);
     // Sau này có thể thêm phân trang (Pageable)
 
+    List<Product> getHotProducts(); // Lấy sản phẩm hot (nổi bật)
+
+    Page<Product> getHotProducts(Pageable pageable);    // Lấy sản phẩm hot có phân trang
+
     List<Product> findByCategoryCategoryId(Integer categoryId); // Lọc danh mục
 
     List<Product> getProductsByMaxPrice(BigDecimal price); // Lọc giá
 
     List<Product> filterProducts(String keyword, Integer categoryId, BigDecimal maxPrice); // Lọc đa điều kiện
 
-    Page<Product> filterProducts(String keyword, Integer categoryId, BigDecimal maxPrice, Pageable pageable); 
+    Page<Product> filterProducts(String keyword, Integer categoryId, BigDecimal maxPrice, Pageable pageable);
 
     Product saveProduct(ProductDTO productDTO);
 

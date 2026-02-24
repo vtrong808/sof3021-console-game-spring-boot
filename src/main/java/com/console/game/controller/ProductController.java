@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -28,18 +27,20 @@ public class ProductController {
 
     // Trang chủ
     @GetMapping({ "/", "/home", "/home/index" })
-    public String home(
-            Model model,
+    public String home(Model model,
             @RequestParam(defaultValue = "0") int page) {
-        int size = 8; // 8 sản phẩm / trang
-
+        int size = 8;
         PageRequest pageable = PageRequest.of(page, size, Sort.by("productId").descending());
+
+        // Sản phẩm mới
         Page<Product> productPage = productService.getActiveProducts(pageable);
+        // Sản phẩm khuyến mãi hot
+        Page<Product> hotProducts = productService.getHotProducts(PageRequest.of(0, 4));
 
         model.addAttribute("products", productPage.getContent());
+        model.addAttribute("hotProducts", hotProducts.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", productPage.getTotalPages());
-
         return "home/index";
     }
 
@@ -52,7 +53,6 @@ public class ProductController {
             @RequestParam(required = false) BigDecimal maxPrice,
             @RequestParam(defaultValue = "0") int page) {
         int size = 8; // 8 sản phẩm / trang
-
 
         PageRequest pageable = PageRequest.of(page, size, Sort.by("productId").descending());
         Page<Product> productPage = productService.filterProducts(keyword, categoryId, maxPrice, pageable);
