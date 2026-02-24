@@ -113,4 +113,22 @@ public class OrderServiceImpl implements OrderService {
 
         return orderRepository.save(order);
     }
+
+    @Override
+    @Transactional
+    public void deleteOrder(Integer orderId) {
+        // 1. Tìm đơn hàng
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy đơn hàng"));
+
+        // 2. Xóa các chi tiết đơn hàng (OrderItem) trước để không bị lỗi khóa ngoại
+        // (Nếu bạn đã cài cascade = CascadeType.ALL trong entity thì có thể bỏ qua bước
+        // 2 này)
+        if (order.getOrderItems() != null && !order.getOrderItems().isEmpty()) {
+            orderItemRepository.deleteAll(order.getOrderItems());
+        }
+
+        // 3. Cuối cùng mới xóa đơn hàng
+        orderRepository.delete(order);
+    }
 }

@@ -12,6 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        
         // Map đường dẫn /uploads/** vào thư mục uploads ở gốc project
         Path uploadDir = Paths.get("./uploads");
         String uploadPath = uploadDir.toFile().getAbsolutePath();

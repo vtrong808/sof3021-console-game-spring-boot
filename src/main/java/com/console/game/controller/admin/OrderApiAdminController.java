@@ -32,7 +32,8 @@ public class OrderApiAdminController {
     @GetMapping("/{id}")
     public ResponseEntity<OrderDTO> getOne(@PathVariable Integer id) {
         Order order = orderService.getOrderById(id);
-        if (order == null) return ResponseEntity.notFound().build();
+        if (order == null)
+            return ResponseEntity.notFound().build();
         return ResponseEntity.ok(convertToDTO(order));
     }
 
@@ -74,5 +75,15 @@ public class OrderApiAdminController {
 
         dto.setItems(itemDTOs);
         return dto;
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteOrder(@PathVariable("id") Integer id) {
+        try {
+            orderService.deleteOrder(id);
+            return ResponseEntity.ok().body("{\"message\": \"Xóa thành công\"}"); // Trả về JSON hợp lệ cho JS
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("{\"error\": \"Lỗi: " + e.getMessage() + "\"}");
+        }
     }
 }
