@@ -42,4 +42,7 @@ public class Order extends BaseEntity {
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
+
+    @Column(unique = true)
+    private String trackingNumber; // Mã vận đơn
 }

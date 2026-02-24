@@ -79,8 +79,8 @@
                         </h5>
 
                         <div th:each="item : ${cartItems}" class="d-flex align-items-center gap-4 mb-4">
-                            <img th:src="@{${item.product.thumbnailUrl}}" width="90" class="rounded-3 border"
-                                alt="Ảnh sản phẩm">
+                            <img th:src="@{/images/{img}(img=${item.product.thumbnailUrl})}" width="90"
+                                class="rounded-3 border" alt="Ảnh sản phẩm">
 
                             <div class="flex-grow-1">
                                 <h6 class="fw-bold mb-1" th:text="${item.product.productName}">Tên sản phẩm</h6>
@@ -131,16 +131,15 @@
                             </strong>
                         </div>
 
-                        <div class="mb-4">
-                            <strong>Phương thức thanh toán: Chuyển khoản ngân hàng</strong>
-                            <p class="mb-0">
-                                <span th:if="${checkout.paymentMethod == 'COD'}">
-                                    Thanh toán khi nhận hàng (COD)
-                                </span>
-                                <span th:if="${checkout.paymentMethod == 'BANK_TRANSFER'}">
-                                    Chuyển khoản ngân hàng
-                                </span>
-                            </p>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Phương thức thanh toán:</span>
+                            <span class="fw-bold text-primary">
+                                <th:block th:switch="${checkout.paymentMethod.name()}">
+                                    <span th:case="'COD'">Thanh toán khi nhận hàng (COD)</span>
+                                    <span th:case="'BANK_TRANSFER'">Chuyển khoản ngân hàng</span>
+                                    <span th:case="*">Chưa xác định</span>
+                                </th:block>
+                            </span>
                         </div>
 
                         <!-- FORM CONFIRM -->

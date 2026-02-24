@@ -154,16 +154,26 @@ public class OrderController {
 
     // Xem lịch sử đặt hàng
     @GetMapping("/list")
-    public String list(Model model, Principal principal) {
+    public String list(@RequestParam(value = "status", required = false) String status,
+            Model model, Principal principal) {
         if (principal == null)
             return "redirect:/auth/login";
 
         User user = userService.findByEmail(principal.getName()).orElseThrow();
+        List<Order> orders;
 
-        // Lấy danh sách đơn hàng của user đó (Sắp xếp mới nhất lên đầu)
-        List<Order> orders = orderRepository.findByUserOrderByOrderDateDesc(user);
+        // Kiểm tra nếu người dùng có chọn lọc theo trạng thái
+        if (status != null && !status.isEmpty() && !status.equals("ALL")) {
+            // Bạn cần đảm bảo OrderRepository có hàm
+            // findByUserAndStatusOrderByOrderDateDesc
+            orders = orderRepository.findByUserAndStatusOrderByOrderDateDesc(user,
+                    com.console.game.enums.OrderStatus.valueOf(status));
+        } else {
+            orders = orderRepository.findByUserOrderByOrderDateDesc(user);
+        }
+
         model.addAttribute("orders", orders);
-
+        model.addAttribute("currentStatus", status != null ? status : "ALL"); // Để giữ trạng thái active trên nút
         return "order/order-list";
     }
 
@@ -190,4 +200,23 @@ public class OrderController {
         return "order/my-wishlist";
     }
 
+    // Thêm phương thức để xử lý yêu cầu hủy đơn từ giao diện
+    @PostMapping("/cancel")
+    public String cancelOrder(@RequestParam("id") Integer orderId, Principal principal) {
+        if (principal == null) {
+            return "redirect:/auth/login";
+        }
+
+        User user = userService.findByEmail(principal.getName()).orElseThrow();
+
+        try {
+            // Gọi service để thực hiện logic hủy đơn
+            orderService.cancelOrder(orderId, user);
+            // Hủy thành công, quay về danh sách với thông báo
+            return "redirect:/order/list?cancelled";
+        } catch (Exception e) {
+            // Nếu có lỗi (ví dụ: đơn đã giao không thể hủy), quay về với thông báo lỗi
+            return "redirect:/order/list?error=" + e.getMessage();
+        }
+    }
 }

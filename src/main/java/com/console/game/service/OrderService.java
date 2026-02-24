@@ -10,10 +10,16 @@ import java.util.List;
 public interface OrderService {
     // --- KHÁCH HÀNG ---
     Order placeOrder(User user, String address, String phone, String fullName, String note);
+
     Order placeOrderWithItems(User user, List<CartItem> items, CheckoutDTO checkoutDTO);
 
     // --- ADMIN ---
     List<Order> getAllOrders();
+
     Order getOrderById(Integer id);
+
     Order updateOrderStatus(Integer orderId, OrderStatus status);
+
+    // --- Hủy đơn hàng ---
+    void cancelOrder(Integer orderId, User user);
 }

@@ -85,41 +85,36 @@
                         </div>
 
                         <div class="card-body p-5 p-md-5">
-
-                            <form method="post" class="space-y-4">
+                            <form th:action="@{/account/sign-up}" th:object="${user}" method="post" class="space-y-4">
 
                                 <div class="form-floating position-relative mb-4">
-                                    <input type="text" class="form-control rounded-4 ps-5" id="fullName"
+                                    <input type="text" class="form-control rounded-4 ps-5" th:field="*{fullName}"
                                         placeholder="Họ và tên" required>
-                                    <label for="fullName">Họ và tên</label>
+                                    <label>Họ và tên</label>
                                     <i class="fas fa-user input-icon"></i>
                                 </div>
 
-
-                                <div class="form-floating position-relative mb-4 ">
-                                    <input type="email" class="form-control rounded-4 ps-5 " id="email" name="email"
+                                <div class="form-floating position-relative mb-4">
+                                    <input type="email" class="form-control rounded-4 ps-5" th:field="*{email}"
                                         placeholder="Email" required>
-
-                                    <label for="email">Email</label>
-
+                                    <label>Email</label>
                                     <i class="fas fa-envelope input-icon"></i>
                                 </div>
 
                                 <div class="row g-3">
                                     <div class="form-floating position-relative mb-4 col-sm-6">
-                                        <input type="password" class="form-control rounded-4 ps-5 " id="password"
-                                            name="password" placeholder="Mật khẩu" required>
-                                        <label for="password">Mật khẩu</label>
+                                        <input type="password" class="form-control rounded-4 ps-5"
+                                            th:field="*{password}" placeholder="Mật khẩu" required>
+                                        <label>Mật khẩu</label>
                                         <i class="fas fa-lock input-icon"></i>
                                     </div>
 
                                     <div class="form-floating position-relative mb-4 col-sm-6">
-                                        <input type="password" class="form-control rounded-4 ps-5 " id="confirmPassword"
+                                        <input type="password" class="form-control rounded-4 ps-5"
                                             name="confirmPassword" placeholder="Xác nhận mật khẩu" required>
-                                        <label for="confirmPassword">Xác nhận mật khẩu</label>
+                                        <label>Xác nhận mật khẩu</label>
                                         <i class="fas fa-lock input-icon"></i>
                                     </div>
-
                                 </div>
 
                                 <button type="submit"

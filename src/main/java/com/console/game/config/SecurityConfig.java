@@ -13,78 +13,76 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+        @Autowired
+        private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return org.springframework.security.crypto.password.NoOpPasswordEncoder.getInstance();
-        // return new BCryptPasswordEncoder(); 
-        // nếu đang test mật khẩu plain text thì đổi lại NoOpPasswordEncoder
-    }
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+                return org.springframework.security.crypto.password.NoOpPasswordEncoder.getInstance();
+                // return new BCryptPasswordEncoder();
+                // nếu đang test mật khẩu plain text thì đổi lại NoOpPasswordEncoder
+        }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        @Bean
+        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.csrf(csrf -> csrf.disable());
+                http.csrf(csrf -> csrf.disable());
 
-        http.authorizeHttpRequests(auth -> auth
+                http.authorizeHttpRequests(auth -> auth
 
-                // PUBLIC
-                .requestMatchers(
-                        "/",
-                        "/home/**",
-                        "/product/**",
-                        "/products/**",
-                        "/shop/**",
-                        "/auth/**",
-                        "/css/**",
-                        "/js/**",
-                        "/images/**",
-                        "/oauth2/**"
-                ).permitAll()
+                                // PUBLIC
+                                .requestMatchers(
+                                                "/",
+                                                "/home/**",
+                                                "/product/**",
+                                                "/products/**",
+                                                "/account/sign-up",
+                                                "/account/forgot-password",
+                                                "/shop/**",
+                                                "/auth/**",
+                                                "/css/**",
+                                                "/js/**",
+                                                "/images/**",
+                                                "/oauth2/**")
+                                .permitAll()
 
-                // CUSTOMER
-                .requestMatchers(
-                        "/cart/**",
-                        "/checkout/**",
-                        "/order/**",
-                        "/account/**"
-                ).hasRole("CUSTOMER")
+                                // CUSTOMER
+                                .requestMatchers(
+                                                "/cart/**",
+                                                "/checkout/**",
+                                                "/order/**",
+                                                "/account/**")
+                                .hasRole("CUSTOMER")
 
-                // ADMIN
-                .requestMatchers("/admin/**")
-                .hasAnyRole("ADMIN")
+                                // ADMIN
+                                .requestMatchers("/admin/**")
+                                .hasAnyRole("ADMIN")
 
-                .anyRequest().authenticated()
-        );
+                                .anyRequest().authenticated());
 
-        // LOGIN LOCAL
-        http.formLogin(form -> form
-                .loginPage("/auth/login")
-                .loginProcessingUrl("/auth/login")
-                .usernameParameter("email")
-                .passwordParameter("password")
-                .defaultSuccessUrl("/", true)
-                .failureUrl("/auth/login?error=true")
-                .permitAll()
-        );
+                // LOGIN LOCAL
+                http.formLogin(form -> form
+                                .loginPage("/auth/login")
+                                .loginProcessingUrl("/auth/login")
+                                .usernameParameter("email")
+                                .passwordParameter("password")
+                                .defaultSuccessUrl("/", true)
+                                .failureUrl("/auth/login?error=true")
+                                .permitAll());
 
-        // LOGIN GOOGLE
-        http.oauth2Login(oauth -> oauth
-                .loginPage("/auth/login")
-                .successHandler(oAuth2LoginSuccessHandler)
-        );
+                // LOGIN GOOGLE
+                http.oauth2Login(oauth -> oauth
+                                .loginPage("/auth/login")
+                                .successHandler(oAuth2LoginSuccessHandler));
 
-        // LOGOUT
-        http.logout(logout -> logout
-                .logoutUrl("/auth/logout")
-                .logoutSuccessUrl("/auth/login?logout=true")
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-                .permitAll()
-        );
+                // LOGOUT
+                http.logout(logout -> logout
+                                .logoutUrl("/auth/logout")
+                                .logoutSuccessUrl("/auth/login?logout=true")
+                                .invalidateHttpSession(true)
+                                .deleteCookies("JSESSIONID")
+                                .permitAll());
 
-        return http.build();
-    }
+                return http.build();
+        }
 }

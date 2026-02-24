@@ -84,4 +84,6 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
             ORDER BY SUM(oi.quantity) DESC
             """)
     List<TopSellingProductDTO> findTopSellingProducts(Pageable pageable);
+
+    List<Order> findByUserAndStatusOrderByOrderDateDesc(User user, com.console.game.enums.OrderStatus status);
 }
