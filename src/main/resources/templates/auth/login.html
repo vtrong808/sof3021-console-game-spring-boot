@@ -94,6 +94,9 @@
                                 <div th:if="${param.error}" class="alert alert-danger text-center">
                                     Email hoặc mật khẩu không đúng!
                                 </div>
+                                <div th:if="${param.reset_success}" class="alert alert-success text-center">
+                                    Đặt lại mật khẩu thành công! Vui lòng đăng nhập lại.
+                                </div>
                                 <div th:if="${param.logout}" class="alert alert-success text-center">
                                     Đã đăng xuất thành công!
                                 </div>

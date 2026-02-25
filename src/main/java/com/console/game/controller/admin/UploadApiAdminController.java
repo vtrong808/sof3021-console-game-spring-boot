@@ -15,7 +15,6 @@ import java.util.UUID;
 @RequestMapping("/api/admin/upload")
 public class UploadApiAdminController {
 
-    // Thư mục lưu ảnh (nằm ngoài thư mục code để tránh mất khi rebuild)
     private final String UPLOAD_DIR = "src/main/resources/static/images/";
 
     @PostMapping

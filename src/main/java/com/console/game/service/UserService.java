@@ -19,4 +19,10 @@ public interface UserService {
     User saveUserForAdmin(UserDTO userDTO); // Thêm mới hoặc update
 
     void deleteUser(Integer id);
+
+    void generateAndSendOtp(String email);
+
+    boolean verifyOtpAndResetPassword(String email, String otp, String newPassword);
+
+    boolean changePassword(String email, String oldPassword, String newPassword);
 }

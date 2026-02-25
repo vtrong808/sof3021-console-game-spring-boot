@@ -17,20 +17,18 @@ public class GlobalModelAttribute {
     @Autowired
     private UserService userService;
 
-    @ModelAttribute("cartItemCount")
-    public int cartItemCount(Authentication authentication) {
-
+    @ModelAttribute("currentUser")
+    public User currentUser(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
-            return 0;
+            return null;
         }
+        return userService.findByEmail(authentication.getName()).orElse(null);
+    }
 
-        String email = authentication.getName();
-        User user = userService.findByEmail(email).orElse(null);
-
-        if (user == null) {
+    @ModelAttribute("cartItemCount")
+    public int cartItemCount(@ModelAttribute("currentUser") User user) {
+        if (user == null)
             return 0;
-        }
-
         return cartService.getCartItemCount(user);
     }
 }
