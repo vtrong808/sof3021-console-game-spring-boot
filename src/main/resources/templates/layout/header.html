@@ -90,7 +90,9 @@
           <!-- Khi ĐÃ đăng nhập -->
           <div class="dropdown" sec:authorize="isAuthenticated()">
             <a class="dropdown-toggle text-decoration-none" href="#" data-bs-toggle="dropdown">
-              <img th:src="@{/images/avatar.png}" class="rounded-circle" width="40" height="40">
+              <img th:src="${currentUser != null and currentUser.avatarUrl != null} 
+        ? ${currentUser.avatarUrl} 
+        : @{/images/avatar.png}" class="rounded-circle" width="40" height="40">
             </a>
 
             <ul class="dropdown-menu dropdown-menu-end shadow rounded-3">

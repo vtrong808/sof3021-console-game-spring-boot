@@ -50,6 +50,10 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    private String resetOtp;
+
+    private LocalDateTime otpExpiryTime;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Address> addresses;

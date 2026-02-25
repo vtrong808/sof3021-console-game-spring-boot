@@ -37,6 +37,8 @@ public class SecurityConfig {
                                                 "/product/**",
                                                 "/products/**",
                                                 "/account/sign-up",
+                                                "/account/forgot-password",
+                                                "/account/reset-password",
                                                 "/shop/**",
                                                 "/auth/**",
                                                 "/css/**",

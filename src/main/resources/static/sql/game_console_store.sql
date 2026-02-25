@@ -183,3 +183,36 @@ CREATE TABLE verification_tokens (
     expiry_date DATETIME NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
+
+-- Thêm cột giảm giá cho product
+ALTER TABLE products
+ADD COLUMN discount_percent INT DEFAULT 0 CHECK (discount_percent BETWEEN 0 AND 100),	-- Giảm giá theo %
+ADD COLUMN is_hot BOOLEAN DEFAULT FALSE;	-- Sản phẩm hot
+
+UPDATE products SET discount_percent = 10 WHERE product_id = 1;
+UPDATE products SET discount_percent = 15 WHERE product_id = 2;
+UPDATE products SET discount_percent = 20 WHERE product_id = 7;
+
+UPDATE users 
+SET avatar_url = '/images/avatar1.jpg'
+WHERE user_id = 1;
+
+UPDATE users 
+SET avatar_url = '/images/avatar2.jpg'
+WHERE user_id = 2;
+
+UPDATE users 
+SET avatar_url = '/images/avatar3.jpg'
+WHERE user_id = 4;
+
+UPDATE users 
+SET avatar_url = '/images/avatar4.jpg'
+WHERE user_id = 5;
+
+UPDATE users 
+SET avatar_url = '/images/avatar5.jpg'
+WHERE user_id = 7;
+
+UPDATE users 
+SET avatar_url = '/images/avatar6.jpg'
+WHERE user_id = 8;

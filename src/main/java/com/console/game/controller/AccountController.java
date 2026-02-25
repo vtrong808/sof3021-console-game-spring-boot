@@ -130,13 +130,65 @@ public class AccountController {
         return "redirect:/account/edit-profile?address_added";
     }
 
-    @GetMapping("/forgot-password")
-    public String forgotPassword() {
+    @PostMapping("/forgot-password")
+    public String processForgotPassword(@RequestParam String email, Model model) {
+        try {
+            userService.generateAndSendOtp(email);
+            model.addAttribute("step", "otp"); // Chuyển sang bước nhập OTP
+            model.addAttribute("email", email);
+            model.addAttribute("message", "Mã OTP đã được gửi đến email của bạn!");
+        } catch (Exception e) {
+            model.addAttribute("error", "Email không tồn tại trong hệ thống!");
+        }
         return "account/forgot-password";
     }
 
+    @PostMapping("/reset-password")
+    public String processResetPassword(@RequestParam String email, 
+                                       @RequestParam String otp, 
+                                       @RequestParam String newPassword, 
+                                       Model model) {
+        boolean isSuccess = userService.verifyOtpAndResetPassword(email, otp, newPassword);
+        if (isSuccess) {
+            return "redirect:/auth/login?reset_success";
+        } else {
+            model.addAttribute("step", "otp");
+            model.addAttribute("email", email);
+            model.addAttribute("error", "Mã OTP không hợp lệ hoặc đã hết hạn!");
+            return "account/forgot-password";
+        }
+    }
+
+    // === XỬ LÝ ĐỔI MẬT KHẨU (Khi đã đăng nhập) ===
+    @PostMapping("/change-password")
+    public String processChangePassword(@RequestParam String currentPassword,
+                                        @RequestParam String newPassword,
+                                        @RequestParam String confirmPassword,
+                                        Principal principal, Model model) {
+        if (!newPassword.equals(confirmPassword)) {
+            model.addAttribute("error", "Mật khẩu xác nhận không khớp!");
+            return "account/change-password";
+        }
+
+        boolean isSuccess = userService.changePassword(principal.getName(), currentPassword, newPassword);
+        if (isSuccess) {
+            model.addAttribute("success", "Đổi mật khẩu thành công!");
+        } else {
+            model.addAttribute("error", "Mật khẩu hiện tại không đúng!");
+        }
+        return "account/change-password";
+    }
+
+    @GetMapping("/forgot-password")
+    public String showForgotPasswordPage(Model model) {
+        // Đặt mặc định bước đầu tiên là nhập email
+        model.addAttribute("step", "email");
+        return "account/forgot-password";
+    }
+
+    // 2. Hàm hiển thị trang Đổi mật khẩu (Dành cho chức năng đổi pass)
     @GetMapping("/change-password")
-    public String changePassword() {
+    public String showChangePasswordPage() {
         return "account/change-password";
     }
 }

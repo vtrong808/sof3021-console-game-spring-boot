@@ -174,6 +174,13 @@
             const file = input.files[0];
             if (!file) return;
 
+            // 1. HIỂN THỊ XEM TRƯỚC NGAY LẬP TỨC (Dùng dữ liệu nội bộ trình duyệt, 100% không bao giờ lỗi)
+            const localPreviewUrl = URL.createObjectURL(file);
+            document.getElementById('thumbnailPreview').src = localPreviewUrl;
+            document.getElementById('thumbnailPreview').classList.remove('d-none');
+            document.getElementById('uploadPlaceholder').classList.add('d-none');
+
+            // 2. Gửi file lên Server ngầm bên trong
             const formData = new FormData();
             formData.append('file', file);
 
@@ -181,16 +188,14 @@
                 const res = await fetch(API_UPLOAD, { method: 'POST', body: formData });
                 if (res.ok) {
                     const data = await res.json();
-                    // Lưu đường dẫn ảnh vào thẻ hidden
+                    // Chỉ cần lưu tên ảnh vào thẻ ẩn để submit form
                     document.getElementById('thumbnailUrl').value = data.url;
-                    // Hiển thị ảnh xem trước
-                    document.getElementById('thumbnailPreview').src = data.url;
-                    document.getElementById('thumbnailPreview').classList.remove('d-none');
-                    document.getElementById('uploadPlaceholder').classList.add('d-none');
                 } else {
-                    alert('Upload ảnh thất bại');
+                    alert('Upload ảnh thất bại trên server!');
                 }
-            } catch (err) { console.error(err); }
+            } catch (err) { 
+                console.error(err); 
+            }
         }
 
         // 5. Lưu sản phẩm (Thêm mới hoặc Cập nhật)

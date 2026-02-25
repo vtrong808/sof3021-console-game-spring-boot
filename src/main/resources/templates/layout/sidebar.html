@@ -61,16 +61,15 @@
         </div>
         <div class="p-4 border-top mt-auto">
             <div class="d-flex align-items-center gap-3 mb-3 p-3 bg-light rounded">
-                <img src="https://via.placeholder.com/50" class="rounded-circle">
+                <img th:src="${currentUser != null and currentUser.avatarUrl != null} 
+        ? ${currentUser.avatarUrl} 
+        : @{/images/avatar.png}" class="rounded-circle" width="40" height="40">
                 <div>
                     <strong>Trọng</strong><br>
                     <small class="text-muted">Super Admin</small>
                 </div>
             </div>
-            <a th:href="@{/}" class="btn btn-outline-warning w-100 mb-4">
-                <i class="fas fa-arrow-alt-circle-left me-2"></i> Quay
-                lại trang chủ</a>
-            <a href="/auth/logout"  class="btn btn-outline-danger w-100">
+            <a href="/auth/logout" class="btn btn-outline-danger w-100">
                 <i class="fas fa-sign-out-alt me-2"></i> Đăng xuất
             </a>
         </div>

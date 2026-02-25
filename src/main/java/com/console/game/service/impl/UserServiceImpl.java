@@ -7,11 +7,14 @@ import com.console.game.model.User;
 import com.console.game.repository.UserRepository;
 import com.console.game.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -91,5 +94,60 @@ public class UserServiceImpl implements UserService {
         if(userRepository.existsById(id)){
             userRepository.deleteById(id);
         }
+    }
+
+    @Autowired
+    private JavaMailSender mailSender;
+
+    // 1. Tạo và gửi OTP
+    @Override
+    public void generateAndSendOtp(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Email không tồn tại trong hệ thống!"));
+
+        // Tạo OTP ngẫu nhiên 6 số
+        String otp = String.format("%06d", new Random().nextInt(999999));
+        
+        user.setResetOtp(otp);
+        user.setOtpExpiryTime(java.time.LocalDateTime.now().plusMinutes(5)); // Hết hạn sau 5 phút
+        userRepository.save(user);
+
+        // Gửi mail
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("Mã OTP khôi phục mật khẩu - Console Game Store");
+        message.setText("Mã OTP của bạn là: " + otp + "\n\nMã này sẽ hết hạn sau 5 phút. Vui lòng không chia sẻ mã này cho bất kỳ ai.");
+        mailSender.send(message);
+    }
+
+    // 2. Xác thực OTP và đặt lại mật khẩu mới
+    @Override
+    public boolean verifyOtpAndResetPassword(String email, String otp, String newPassword) {
+        User user = userRepository.findByEmail(email).orElse(null);
+        if (user == null || user.getResetOtp() == null) {
+            return false;
+        }
+
+        // Kiểm tra mã OTP và thời gian hết hạn
+        if (user.getResetOtp().equals(otp) && user.getOtpExpiryTime().isAfter(java.time.LocalDateTime.now())) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+            user.setResetOtp(null); // Xóa OTP sau khi dùng
+            user.setOtpExpiryTime(null);
+            userRepository.save(user);
+            return true;
+        }
+        return false;
+    }
+
+    // 3. Đổi mật khẩu cho người dùng đang đăng nhập
+    @Override
+    public boolean changePassword(String email, String oldPassword, String newPassword) {
+        User user = userRepository.findByEmail(email).orElse(null);
+        if (user != null && passwordEncoder.matches(oldPassword, user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+            return true;
+        }
+        return false;
     }
 }
